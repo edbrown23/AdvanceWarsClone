@@ -1,4 +1,7 @@
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,16 +12,21 @@ import java.awt.image.BufferedImage;
  */
 public class Tile {
 
-    private boolean unitAccessable;
+    private boolean unitAccessible;
     private boolean blocksLineOfSight;
     private BufferedImage terrainSprite;
 
-    public boolean isUnitAccessable() {
-        return unitAccessable;
+    public Tile(boolean unitAccessible, boolean blocksLineOfSight) {
+        this.unitAccessible = unitAccessible;
+        this.blocksLineOfSight = blocksLineOfSight;
     }
 
-    public void setUnitAccessable(boolean unitAccessable) {
-        this.unitAccessable = unitAccessable;
+    public boolean isUnitAccessible() {
+        return unitAccessible;
+    }
+
+    public void setUnitAccessible(boolean unitAccessible) {
+        this.unitAccessible = unitAccessible;
     }
 
     public boolean isBlocksLineOfSight() {
@@ -35,5 +43,12 @@ public class Tile {
 
     public void setTerrainSprite(BufferedImage terrainSprite) {
         this.terrainSprite = terrainSprite;
+    }
+    
+    public void render(Graphics2D g2d, int x, int y){
+        AffineTransform transform = new AffineTransform();
+        transform.scale(1, 1);
+        //g2d.setTransform(transform);
+        g2d.drawImage(terrainSprite, null, x, y);
     }
 }

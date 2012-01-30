@@ -15,6 +15,15 @@ public abstract class BaseUnit {
     protected int xPosition;
     protected int yPosition;
 
+    protected BaseUnit(int health, int attackPower, Facing facingDirection, int xPosition, BufferedImage sprite, int yPosition) {
+        this.health = health;
+        this.attackPower = attackPower;
+        this.facingDirection = facingDirection;
+        this.xPosition = xPosition;
+        this.sprite = sprite;
+        this.yPosition = yPosition;
+    }
+
     public int getAttackPower() {
         return attackPower;
     }
