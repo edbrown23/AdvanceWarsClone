@@ -14,35 +14,32 @@ import java.util.Random;
  */
 public class testRun {
     public static void main(String[] args){
-        Random numGen = new Random();
         Color water = new Color(0, 0, 255);
         Color grass = new Color(0, 255, 0);
-        Color scary = new Color(255, 0, 0);
-
-        try{
-            BufferedImage testNoise = new BufferedImage(100, 100, BufferedImage.TYPE_BYTE_GRAY);
+        Color mountains = new Color(130, 100, 25);
+        
+            float[][] finalNoiseArray = PerlinNoise.GeneratePerlinNoise(100, 100, 8);
+            BufferedImage perlinNoiseImage = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
             for(int y = 0; y < 100; y++){
                 for(int x = 0; x < 100; x++){
-                    double noise = (SimplexNoise.noise2D(x, y) + 1) / 2;
-                    double randomNoise = (SimplexNoise.noise2D(numGen.nextInt(1000), numGen.nextInt(1000)) + 1) / numGen.nextInt(6);
-
-                    noise -= randomNoise;
-                    //System.out.println(noise);
-//                    if(noise < .333){
-//                        testNoise.setRGB(x, y, water.getRGB());
-//                    }else if(noise > .333 && noise < .666){
-//                        testNoise.setRGB(x, y, grass.getRGB());
-//                    }else{
-//                        testNoise.setRGB(x, y, scary.getRGB());
-//                    }
-                    testNoise.setRGB(x, y,(int)(noise * 1000000000));
+                    int grey = (int)(255 * finalNoiseArray[x][y]);
+                    Color greyColor = new Color(255, grey, grey, grey);
+                    if(grey < 100){
+                        perlinNoiseImage.setRGB(x, y, water.getRGB());
+                    }else if(grey > 100 && grey < 180){
+                        perlinNoiseImage.setRGB(x, y, grass.getRGB());
+                    }else{
+                        perlinNoiseImage.setRGB(x, y, mountains.getRGB());
+                    }
+                    //perlinNoiseImage.setRGB(x, y, greyColor.getRGB());
                 }
             }
-            ImageIO.write(testNoise, "png", new File("C:/Users/Eric/Desktop/AdvanceWarsClone/heightmapnoise.png"));
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-
+            try{
+                ImageIO.write(perlinNoiseImage, "png", new File("C:/Users/Eric/Desktop/AdvanceWarsClone/perlinNoise.png"));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        
         //BasicGUI gui = new BasicGUI();
     }
 }
