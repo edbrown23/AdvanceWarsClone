@@ -46,9 +46,15 @@ public class Tile {
     }
     
     public void render(Graphics2D g2d, int x, int y){
-        AffineTransform transform = new AffineTransform();
-        transform.scale(1, 1);
-        //g2d.setTransform(transform);
+        AffineTransform transform = g2d.getTransform();
+        AffineTransform scaleTransform = new AffineTransform();
+        scaleTransform.scale(2, 2);
+        g2d.transform(scaleTransform);
         g2d.drawImage(terrainSprite, null, x, y);
+        g2d.setTransform(transform);
+    }
+    
+    public String toString(){
+        return unitAccessible + " unitAccessible, " + blocksLineOfSight + " blocksLineOfSight" + terrainSprite.toString();
     }
 }
