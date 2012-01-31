@@ -5,7 +5,7 @@ import java.util.Random;
  * User: Eric
  * Date: 1/30/12
  * Time: 2:48 PM
- * To change this template use File | Settings | File Templates.
+ * Translated from Herman Tulleken's C# Perlin noise generator found here: http://devmag.org.za/2009/04/25/perlin-noise/
  */
 public class PerlinNoise {
     public static float[][] GeneratePerlinNoise(float[][] baseNoise, int octaveCount)
