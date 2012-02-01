@@ -1,7 +1,10 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,10 +18,25 @@ public class Tile {
     private boolean unitAccessible;
     private boolean blocksLineOfSight;
     private BufferedImage terrainSprite;
+    private TileTypes tileType;
 
-    public Tile(boolean unitAccessible, boolean blocksLineOfSight) {
+    public Tile(boolean unitAccessible, boolean blocksLineOfSight, String path, TileTypes type) {
         this.unitAccessible = unitAccessible;
         this.blocksLineOfSight = blocksLineOfSight;
+        tileType = type;
+        try {
+            terrainSprite = ImageIO.read(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public TileTypes getTileType() {
+        return tileType;
+    }
+
+    public void setTileType(TileTypes tileType) {
+        this.tileType = tileType;
     }
 
     public boolean isUnitAccessible() {
