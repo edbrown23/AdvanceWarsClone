@@ -31,6 +31,10 @@ public class Tile {
         }
     }
 
+    public Tile(){
+        tileType = TileTypes.NULL;
+    }
+
     public TileTypes getTileType() {
         return tileType;
     }

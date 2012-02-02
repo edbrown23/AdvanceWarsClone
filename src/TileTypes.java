@@ -6,5 +6,5 @@
  * To change this template use File | Settings | File Templates.
  */
 public enum TileTypes {
-    Water, Grass, Trees, Mountains
+    Water, Grass, Trees, Mountains, NULL
 }
