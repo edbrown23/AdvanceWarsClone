@@ -10,7 +10,7 @@ public class QuadTreeNode {
     private QuadTreeNode UR;
     private QuadTreeNode BL;
     private QuadTreeNode BR;
-    private Tile tile = new Tile();
+    private Tile tile;
     private int renderingScalar;
     private int x, y;
     
@@ -33,6 +33,10 @@ public class QuadTreeNode {
         renderingScalar = scalar;
         this.x = x;
         this.y = y;
+    }
+    
+    public QuadTreeNode(){
+        tile = new Tile();
     }
     
     public boolean checkIdenticalBranches(){
