@@ -74,16 +74,14 @@ public class SimpleMap {
     }
 
     private QuadTreeNode[][] generateQuadTree(QuadTreeNode[][] nodes, int width, int height, int scalar){
-        Tile nullTile = new Tile();
         if(width == 2 && height == 1){
             return nodes;
         }else{
-            QuadTreeNode[][] tempNodes = new QuadTreeNode[width / 2][height / 2];
+            QuadTreeNode[][] tempNodes = new QuadTreeNode[(width / 2)][(height / 2)];
             int tempXindex = 0;
             int tempYindex = 0;
             for(int y = 0; y < height - 1; y += 2){
                 for(int x = 0; x < width - 1; x += 2){
-                    tempXindex++;
                     if(y == 0){
                         tempNodes[tempXindex][tempYindex] = new QuadTreeNode(nodes[x][y], nodes[x+1][y], nodes[x][y+1], nodes[x+1][y+1], scalar, (x * scalar * multiplier) - 1, (y * scalar * multiplier));
                     }else{
@@ -92,8 +90,9 @@ public class SimpleMap {
                     if(tempNodes[tempXindex][tempYindex].checkIdenticalBranches()){
                         tempNodes[tempXindex][tempYindex].setTile(nodes[x][y].getTile());
                     }else{
-                        tempNodes[tempXindex][tempYindex].setTile(nullTile);
+                        tempNodes[tempXindex][tempYindex].setTile(new Tile());
                     }
+                    tempXindex++;
                 }
                 tempYindex++;
                 tempXindex = 0;
