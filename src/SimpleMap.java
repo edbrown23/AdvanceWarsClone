@@ -43,63 +43,34 @@ public class SimpleMap {
             for(int x = 0; x < mapWidth; x++){
                 int grey = (int)(255 * finalNoiseArray[x][y]);
                 if(grey < waterLevel){
-                    Tile tempWaterTile = new Tile(false, false, "C:/Users/Simop/Desktop/AdvanceWarsClone/Sprites/waterSprite.png", TileTypes.Water);
+                    Tile tempWaterTile = new Tile(false, false, "Sprites/waterSprite.png", TileTypes.Water);
                     mapTiles[x][y] = tempWaterTile;
                     baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), tempWaterTile, baseRenderingScalar, x, y);
                     debugImage.setRGB(x, y, new Color(0, 0, 255).getRGB());
                 }else if(grey > waterLevel && grey < grassLevel){
-                    Tile tempGrassTile = new Tile(true, false, "C:/Users/Simop/Desktop/AdvanceWarsClone/Sprites/grassSprite.png", TileTypes.Grass);
+                    Tile tempGrassTile = new Tile(true, false, "C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/grassSprite.png", TileTypes.Grass);
                     mapTiles[x][y] = tempGrassTile;
                     baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), tempGrassTile, baseRenderingScalar, x, y);
                     debugImage.setRGB(x, y, new Color(0, 255, 0).getRGB());
                 }else if(grey > grassLevel && grey < treeLevel){
-                    Tile tempTreeTile = new Tile(true, true, "C:/Users/Simop/Desktop/AdvanceWarsClone/Sprites/treeSprite.png", TileTypes.Trees);
+                    Tile tempTreeTile = new Tile(true, true, "C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/treeSprite.png", TileTypes.Trees);
                     mapTiles[x][y] = tempTreeTile;
                     baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), tempTreeTile, baseRenderingScalar, x, y);
                     debugImage.setRGB(x, y, new Color(50, 150, 50).getRGB());
                 }else {
-                    Tile tempMountainTile = new Tile(false, true, "C:/Users/Simop/Desktop/AdvanceWarsClone/Sprites/mountainSprite.png", TileTypes.Mountains);
+                    Tile tempMountainTile = new Tile(false, true, "C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/mountainSprite.png", TileTypes.Mountains);
                     mapTiles[x][y] = tempMountainTile;
                     baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), tempMountainTile, baseRenderingScalar, x, y);
                     debugImage.setRGB(x, y, new Color(150, 100, 25).getRGB());
                 }
             }
         }
-        mapTreeRoots = generateQuadTree(baseTreeTiles, mapWidth, mapHeight, 2);
         try{
-            ImageIO.write(debugImage, "png", new File("C:/Users/Simop/Desktop/AdvanceWarsClone/Sprites/perlinNoise.png"));
+            ImageIO.write(debugImage, "png", new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/perlinNoise.png"));
         }catch(IOException e){
             e.printStackTrace();
         }
-    }
-
-    private QuadTreeNode[][] generateQuadTree(QuadTreeNode[][] nodes, int width, int height, int scalar){
-        if(width == 2 && height == 1){
-            return nodes;
-        }else{
-            QuadTreeNode[][] tempNodes = new QuadTreeNode[(width / 2)][(height / 2)];
-            int tempXindex = 0;
-            int tempYindex = 0;
-            for(int y = 0; y < height - 1; y += 2){
-                for(int x = 0; x < width - 1; x += 2){
-                    if(y == 0){
-                        tempNodes[tempXindex][tempYindex] = new QuadTreeNode(nodes[x][y], nodes[x+1][y], nodes[x][y+1], nodes[x+1][y+1], scalar, (x * scalar * multiplier) - 1, (y * scalar * multiplier));
-                    }else{
-                        tempNodes[tempXindex][tempYindex] = new QuadTreeNode(nodes[x][y], nodes[x+1][y], nodes[x][y+1], nodes[x+1][y+1], scalar, (x * scalar * multiplier) - 1, (y * scalar * multiplier) - 1);
-                    }
-                    if(tempNodes[tempXindex][tempYindex].checkIdenticalBranches()){
-                        tempNodes[tempXindex][tempYindex].setTile(nodes[x][y].getTile());
-                    }else{
-                        tempNodes[tempXindex][tempYindex].setTile(new Tile());
-                    }
-                    tempXindex++;
-                }
-                tempYindex++;
-                tempXindex = 0;
-            }
-            scalar++;
-            return generateQuadTree(tempNodes, width / 2, height / 2, scalar);
-        }
+        mapTreeRoots = QuadTree.generateQuadTree(baseTreeTiles, mapWidth, mapHeight, 2);
     }
 
     public void createMapFromImage(String path){
@@ -120,27 +91,6 @@ public class SimpleMap {
             }
         }catch(IOException e){
             e.printStackTrace();
-        }
-    }
-
-    public void quadTreeRender(Graphics2D g2d, QuadTreeNode branch, int topLeftX, int topLeftY){
-        AffineTransform transform;
-        AffineTransform scaleTransform = new AffineTransform();
-        if(branch.checkIdenticalBranches()){
-            transform = g2d.getTransform();
-            scaleTransform.scale(branch.getRenderingScalar(), branch.getRenderingScalar());
-            g2d.transform(scaleTransform);
-            g2d.drawImage(branch.getTile().getTerrainSprite(), null, branch.getX(), branch.getY());
-            g2d.setTransform(transform);
-        }else{
-            QuadTreeNode[] branches = branch.getBranches();
-            for(int i = 0; i < 4; i++){
-                if(branches[i].getX() > (topLeftX * branches[i].getRenderingScalar()) && branches[i].getX() < ((topLeftX * 40) * branches[i].getRenderingScalar())){
-                    if(branches[i].getY() > (topLeftY * branches[i].getRenderingScalar()) && branches[i].getY() < ((topLeftY * 20) * branches[i].getRenderingScalar())){
-                        quadTreeRender(g2d, branches[i], topLeftX, topLeftY);
-                    }
-                }
-            }
         }
     }
 
