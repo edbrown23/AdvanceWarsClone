@@ -45,22 +45,22 @@ public class SimpleMap {
                 if(grey < waterLevel){
                     Tile tempWaterTile = new Tile(false, false, "Sprites/waterSprite.png", TileTypes.Water);
                     mapTiles[x][y] = tempWaterTile;
-                    baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), tempWaterTile, baseRenderingScalar, x, y);
+                    baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), tempWaterTile, baseRenderingScalar, x * multiplier, y * multiplier);
                     debugImage.setRGB(x, y, new Color(0, 0, 255).getRGB());
                 }else if(grey > waterLevel && grey < grassLevel){
                     Tile tempGrassTile = new Tile(true, false, "C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/grassSprite.png", TileTypes.Grass);
                     mapTiles[x][y] = tempGrassTile;
-                    baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), tempGrassTile, baseRenderingScalar, x, y);
+                    baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), tempGrassTile, baseRenderingScalar, x * multiplier, y * multiplier);
                     debugImage.setRGB(x, y, new Color(0, 255, 0).getRGB());
                 }else if(grey > grassLevel && grey < treeLevel){
                     Tile tempTreeTile = new Tile(true, true, "C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/treeSprite.png", TileTypes.Trees);
                     mapTiles[x][y] = tempTreeTile;
-                    baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), tempTreeTile, baseRenderingScalar, x, y);
+                    baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), tempTreeTile, baseRenderingScalar, x * multiplier, y * multiplier);
                     debugImage.setRGB(x, y, new Color(50, 150, 50).getRGB());
                 }else {
                     Tile tempMountainTile = new Tile(false, true, "C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/mountainSprite.png", TileTypes.Mountains);
                     mapTiles[x][y] = tempMountainTile;
-                    baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), tempMountainTile, baseRenderingScalar, x, y);
+                    baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), tempMountainTile, baseRenderingScalar, x * multiplier, y * multiplier);
                     debugImage.setRGB(x, y, new Color(150, 100, 25).getRGB());
                 }
             }

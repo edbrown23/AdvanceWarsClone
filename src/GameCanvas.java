@@ -9,7 +9,7 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class GameCanvas extends JPanel {
-    private SimpleMap map = new SimpleMap(512, 256);
+    private SimpleMap map = new SimpleMap(8, 4);
     private int topLeftX, topLeftY;
     
     public GameCanvas(String path){

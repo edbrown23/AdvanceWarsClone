@@ -30,6 +30,11 @@ public class BasicGUI extends JFrame {
             this.requestFocus();
             game.setTopCoords(topLeftX, topLeftY);
             game.repaint();
+            try{
+                Thread.sleep(10000);
+            }catch(InterruptedException e){
+                e.printStackTrace();
+            }
         }
     }
 

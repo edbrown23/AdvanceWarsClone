@@ -40,30 +40,30 @@ public class QuadTreeNode {
     }
     
     public boolean checkIdenticalBranches(){
-        // Better way to do this?
-        if(UL.getTile().getTileType() == TileTypes.NULL){
-            return false;
-        }else if(UR.getTile().getTileType() == TileTypes.NULL){
-            return false;
-        }else if(BL.getTile().getTileType() == TileTypes.NULL){
-            return false;
-        }else if(BR.getTile().getTileType() == TileTypes.NULL){
-            return false;
-        }else{
-            return true;
-        }
-//        TileTypes ulType = UL.getTile().getTileType();
-//        TileTypes urType = UR.getTile().getTileType();
-//        TileTypes blType = BL.getTile().getTileType();
-//        TileTypes brType = BR.getTile().getTileType();
-//        if(ulType == urType){
-//            if(urType == blType){
-//                if(blType == brType){
-//                    return true;
-//                }
-//            }
+//        // Better way to do this?
+//        if(UL.getTile().getTileType() == TileTypes.NULL){
+//            return false;
+//        }else if(UR.getTile().getTileType() == TileTypes.NULL){
+//            return false;
+//        }else if(BL.getTile().getTileType() == TileTypes.NULL){
+//            return false;
+//        }else if(BR.getTile().getTileType() == TileTypes.NULL){
+//            return false;
+//        }else{
+//            return true;
 //        }
-//        return false;
+        TileTypes ulType = UL.getTile().getTileType();
+        TileTypes urType = UR.getTile().getTileType();
+        TileTypes blType = BL.getTile().getTileType();
+        TileTypes brType = BR.getTile().getTileType();
+        if(ulType == urType){
+            if(urType == blType){
+                if(blType == brType){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
     public Tile getTile(){
