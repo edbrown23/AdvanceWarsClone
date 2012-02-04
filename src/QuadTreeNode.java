@@ -10,33 +10,35 @@ public class QuadTreeNode {
     private QuadTreeNode UR;
     private QuadTreeNode BL;
     private QuadTreeNode BR;
-    private Tile tile;
-    private int renderingScalar;
+    private TileTypes tile;
+    private int width, height;
     private int x, y;
     
-    public QuadTreeNode(QuadTreeNode upL, QuadTreeNode upR, QuadTreeNode botL, QuadTreeNode botR, Tile inputTile, int scalar, int x, int y){
+    public QuadTreeNode(QuadTreeNode upL, QuadTreeNode upR, QuadTreeNode botL, QuadTreeNode botR, TileTypes inputTile, int w, int h, int x, int y){
         UL = upL;
         UR = upR;
         BL = botL;
         BR = botR;
         tile = inputTile;
-        renderingScalar = scalar;
+        width = w;
+        height = h;
         this.x = x;
         this.y = y;
     }
 
-    public QuadTreeNode(QuadTreeNode upL, QuadTreeNode upR, QuadTreeNode botL, QuadTreeNode botR, int scalar, int x, int y){
+    public QuadTreeNode(QuadTreeNode upL, QuadTreeNode upR, QuadTreeNode botL, QuadTreeNode botR, int w, int h, int x, int y){
         UL = upL;
         UR = upR;
         BL = botL;
         BR = botR;
-        renderingScalar = scalar;
+        width = w;
+        height = h;
         this.x = x;
         this.y = y;
     }
     
     public QuadTreeNode(){
-        tile = new Tile();
+        tile = TileTypes.NULL;
     }
     
     public boolean checkIdenticalBranches(){
@@ -52,10 +54,10 @@ public class QuadTreeNode {
 //        }else{
 //            return true;
 //        }
-        TileTypes ulType = UL.getTile().getTileType();
-        TileTypes urType = UR.getTile().getTileType();
-        TileTypes blType = BL.getTile().getTileType();
-        TileTypes brType = BR.getTile().getTileType();
+        TileTypes ulType = UL.getTile();
+        TileTypes urType = UR.getTile();
+        TileTypes blType = BL.getTile();
+        TileTypes brType = BR.getTile();
         if(ulType == urType){
             if(urType == blType){
                 if(blType == brType){
@@ -66,11 +68,11 @@ public class QuadTreeNode {
         return false;
     }
     
-    public Tile getTile(){
+    public TileTypes getTile(){
         return tile;
     }
     
-    public void setTile(Tile type){
+    public void setTile(TileTypes type){
         tile = type;
     }
     
@@ -93,7 +95,11 @@ public class QuadTreeNode {
         return y;
     }
     
-    public int getRenderingScalar(){
-        return renderingScalar;
+    public int getWidth(){
+        return width;    
+    }
+    
+    public int getHeight(){
+        return height;
     }
 }
