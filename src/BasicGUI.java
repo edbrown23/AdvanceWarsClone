@@ -31,7 +31,7 @@ public class BasicGUI extends JFrame {
             game.setTopCoords(topLeftX, topLeftY);
             game.repaint();
             try{
-                Thread.sleep(10000);
+                Thread.sleep(10);
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -49,20 +49,20 @@ public class BasicGUI extends JFrame {
         public void keyPressed(KeyEvent e) {
             //To change body of implemented methods use File | Settings | File Templates.
             if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-                if(topLeftX < 359){
-                    topLeftX++;
+                if(topLeftX < (2028 * 20) - 400){
+                    topLeftX += 20;
                 }
             }else if(e.getKeyCode() == KeyEvent.VK_LEFT){
                 if(topLeftX > 0){
-                    topLeftX--;
+                    topLeftX -= 20;
                 }
             }else if(e.getKeyCode() == KeyEvent.VK_UP){
                 if(topLeftY > 0){
-                    topLeftY--;
+                    topLeftY -= 20;
                 }
             }else if(e.getKeyCode() == KeyEvent.VK_DOWN){
-                if(topLeftY < 179){
-                    topLeftY++;
+                if(topLeftY < (1024 * 20) - 400){
+                    topLeftY += 20;
                 }
             }
         }

@@ -9,7 +9,7 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class GameCanvas extends JPanel {
-    private SimpleMap map = new SimpleMap(512, 256);
+    private SimpleMap map = new SimpleMap(2048, 1024);
     private int topLeftX, topLeftY;
     
     public GameCanvas(String path){
@@ -41,11 +41,13 @@ public class GameCanvas extends JPanel {
     @Override
     public void paint(Graphics g){
         Graphics2D g2d = (Graphics2D)g;
-        g2d.setColor(Color.black);
-        g2d.drawRect(0, 0, 400, 200);
         QuadTreeNode[][] roots = map.getMapTreeRoots();
         QuadTree.quadTreeRender(g2d, roots[0][0], topLeftX, topLeftY);
         QuadTree.quadTreeRender(g2d, roots[1][0], topLeftX, topLeftY);
+        g2d.setColor(Color.white);
+        g2d.fillRect(0, 400, 800, 400);
+        g2d.fillRect(800, 0, 400, 800);
+        g2d.setColor(Color.black);
         //map.render(g2d, topLeftX, topLeftY);
         for(int x = 0; x <= 800; x += 20){
             g2d.drawLine(x, 0, x, 400);
