@@ -92,8 +92,8 @@ public class QuadTree {
             try {
                 QuadTreeNode[] branches = branch.getBranches();
                 for(int i = 0; i < 4; i++){
-                    if((branches[i].getX()) < (topLeftX + 800) && (branches[i].getX()) > (topLeftX)){
-                        if((branches[i].getY()) < (topLeftY + 400) && (branches[i].getY()) > (topLeftY)){
+                    if((branches[i].getX()) < (topLeftX + 800) && (branches[i].getX()) > topLeftX){
+                        if((branches[i].getY()) < (topLeftY + 400) && (branches[i].getY()) > topLeftY){
                             quadTreeRender(g2d, branches[i], topLeftX, topLeftY);
                         }
                     }
