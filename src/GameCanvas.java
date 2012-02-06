@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,6 +13,8 @@ import java.awt.*;
 public class GameCanvas extends JPanel {
     private SimpleMap map = new SimpleMap(2048, 1024);
     private int topLeftX, topLeftY;
+    private int selectedX, selectedY = 0;
+    private QuadTreeNode[][] roots;
     
     public GameCanvas(String path){
         this.setSize(400, 200);
@@ -23,6 +27,10 @@ public class GameCanvas extends JPanel {
         this.setSize(400, 200);
         map.createMapFromPerlinNoise(100, 150, 200, 255);
         QuadTree.setupSprites();
+        roots = map.getMapTreeRoots();
+
+        MouseHandler mHandler = new MouseHandler();
+        this.addMouseListener(mHandler);
     }
     
     public void setTopCoords(int topX, int topY){
@@ -41,7 +49,7 @@ public class GameCanvas extends JPanel {
     @Override
     public void paint(Graphics g){
         Graphics2D g2d = (Graphics2D)g;
-        QuadTreeNode[][] roots = map.getMapTreeRoots();
+
         QuadTree.quadTreeRender(g2d, roots[0][0], topLeftX, topLeftY);
         QuadTree.quadTreeRender(g2d, roots[1][0], topLeftX, topLeftY);
         g2d.setColor(Color.white);
@@ -55,5 +63,40 @@ public class GameCanvas extends JPanel {
         for(int y = 0; y <= 400; y += 20){
             g2d.drawLine(0, y, 800, y);
         }
-    }    
+        //g2d.setColor(Color.green);
+        //g2d.fillRect(selectedX, selectedY, 20, 20);
+    }
+    
+    private class MouseHandler implements MouseListener{
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int x = e.getX();
+            int y = e.getY();
+            selectedX = topLeftX + x;
+            selectedY = topLeftY + y;
+            QuadTree.selectTile(roots[0][0], selectedX, selectedY);
+            QuadTree.selectTile(roots[1][0], selectedX, selectedY);
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+    }
 }

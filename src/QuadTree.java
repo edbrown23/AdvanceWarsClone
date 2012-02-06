@@ -2,6 +2,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 
@@ -17,6 +18,7 @@ public class QuadTree {
     private static BufferedImage grassSprite;
     private static BufferedImage treeSprite;
     private static BufferedImage mountainSprite;
+    private static QuadTreeNode selectedNode;
 
     public static void setupSprites(){
         try{
@@ -66,6 +68,22 @@ public class QuadTree {
                             g2d.drawImage(grassSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
                             break;
                         case Trees:
+//                            try {
+//                                QuadTreeNode[] branches = branch.getBranches();
+//                                QuadTreeNode[] subBranches;
+//                                for(int i = 0; i < 4; i++){
+//                                    try {
+//                                        subBranches = branches[i].getBranches();
+//                                        for(int j = 0; j < 4; j++){
+//                                            g2d.drawImage(treeSprite, subBranches[j].getX() - topLeftX, subBranches[j].getY() - topLeftY, subBranches[j].getWidth(), subBranches[j].getHeight(), null);
+//                                        }
+//                                    } catch (Exception e) {
+//                                        g2d.drawImage(treeSprite, branches[i].getX() - topLeftX, branches[i].getY() - topLeftY, branches[i].getWidth(), branches[i].getHeight(), null);
+//                                    }
+//                                }
+//                            } catch (Exception e) {
+//                                g2d.drawImage(treeSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
+//                            }
                             g2d.drawImage(treeSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
                             break;
                         case Mountains:
@@ -75,9 +93,40 @@ public class QuadTree {
                 }
             }
         }else{
-            QuadTreeNode[] branches = branch.getBranches();
-            for(int i = 0; i < 4; i++){
-                quadTreeRender(g2d, branches[i], topLeftX, topLeftY);
+            try {
+                QuadTreeNode[] branches = branch.getBranches();
+                for(int i = 0; i < 4; i++){
+                    quadTreeRender(g2d, branches[i], topLeftX, topLeftY);
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
+        if(selectedNode != null){
+            g2d.setColor(Color.green);
+            g2d.fillRect(selectedNode.getX() - topLeftX, selectedNode.getY() - topLeftY, 20, 20);
+        }
+    }
+
+    public static void selectTile(QuadTreeNode branch, int mouseX, int mouseY){
+        if(branch.getWidth() == 20 && branch.getHeight() == 20){
+            if(mouseX >= branch.getX() && mouseX <= (branch.getX() + branch.getWidth())){
+                if(mouseY >= branch.getY() && mouseY <= (branch.getY() + branch.getHeight())){
+                    selectedNode = branch;
+                }
+            }
+        }else{
+            try{
+                QuadTreeNode[] branches = branch.getBranches();
+                for(int i = 0; i < 4; i++){
+                    if(mouseX >= branches[i].getX() && mouseX <= (branches[i].getX() + branches[i].getWidth())){
+                        if(mouseY >= branches[i].getY() && mouseY <= (branches[i].getY() + branches[i].getHeight())){
+                            selectTile(branches[i], mouseX, mouseY);
+                        }
+                    }
+                }
+            }catch(NullPointerException e){
+                e.printStackTrace();
             }
         }
     }

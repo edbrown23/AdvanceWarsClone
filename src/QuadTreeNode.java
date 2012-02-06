@@ -13,7 +13,7 @@ public class QuadTreeNode {
     private TileTypes tile;
     private int width, height;
     private int x, y;
-    
+
     public QuadTreeNode(QuadTreeNode upL, QuadTreeNode upR, QuadTreeNode botL, QuadTreeNode botR, TileTypes inputTile, int w, int h, int x, int y){
         UL = upL;
         UR = upR;
@@ -36,11 +36,11 @@ public class QuadTreeNode {
         this.x = x;
         this.y = y;
     }
-    
+
     public QuadTreeNode(){
         tile = TileTypes.NULL;
     }
-    
+
     public boolean checkIdenticalBranches(){
 //        // Better way to do this?
 //        if(UL.getTile().getTileType() == TileTypes.NULL){
@@ -67,38 +67,41 @@ public class QuadTreeNode {
         }
         return false;
     }
-    
+
     public TileTypes getTile(){
         return tile;
     }
-    
+
     public void setTile(TileTypes type){
         tile = type;
     }
-    
+
     public QuadTreeNode[] getBranches(){
         QuadTreeNode[] branchArray = new QuadTreeNode[4];
-        
-        branchArray[0] = UL;
-        branchArray[1] = UR;
-        branchArray[2] = BL;
-        branchArray[3] = BR;
-        
-        return branchArray;
+        if(UL == null){
+            throw new NullPointerException("Leaf has no branches!");
+        }else{
+            branchArray[0] = UL;
+            branchArray[1] = UR;
+            branchArray[2] = BL;
+            branchArray[3] = BR;
+
+            return branchArray;
+        }
     }
-    
+
     public int getX(){
         return x;
     }
-    
+
     public int getY(){
         return y;
     }
-    
+
     public int getWidth(){
-        return width;    
+        return width;
     }
-    
+
     public int getHeight(){
         return height;
     }
