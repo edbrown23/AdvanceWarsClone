@@ -58,16 +58,14 @@ public class QuadTree {
 
     public static void quadTreeRender(Graphics2D g2d, QuadTreeNode branch, int topLeftX, int topLeftY){
         if(!(branch.getTile() == TileTypes.NULL)){
-            if((branch.getX()) < (topLeftX + 800) && (branch.getX()) > (topLeftX - 800)){
-                if((branch.getY()) < (topLeftY + 400) && (branch.getY()) > (topLeftY - 400)){
-                    switch(branch.getTile()){
-                        case Water:
-                            g2d.drawImage(waterSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
-                            break;
-                        case Grass:
-                            g2d.drawImage(grassSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
-                            break;
-                        case Trees:
+            switch(branch.getTile()){
+                case Water:
+                    g2d.drawImage(waterSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
+                    break;
+                case Grass:
+                    g2d.drawImage(grassSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
+                    break;
+                case Trees:
 //                            try {
 //                                QuadTreeNode[] branches = branch.getBranches();
 //                                QuadTreeNode[] subBranches;
@@ -84,19 +82,22 @@ public class QuadTree {
 //                            } catch (Exception e) {
 //                                g2d.drawImage(treeSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
 //                            }
-                            g2d.drawImage(treeSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
-                            break;
-                        case Mountains:
-                            g2d.drawImage(mountainSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
-                            break;
-                    }
-                }
+                    g2d.drawImage(treeSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
+                    break;
+                case Mountains:
+                    g2d.drawImage(mountainSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
+                    break;
             }
         }else{
             try {
                 QuadTreeNode[] branches = branch.getBranches();
                 for(int i = 0; i < 4; i++){
-                    quadTreeRender(g2d, branches[i], topLeftX, topLeftY);
+                    if((branches[i].getX()) < (topLeftX + 800) && (branches[i].getX()) > (topLeftX)){
+                        if((branches[i].getY()) < (topLeftY + 400) && (branches[i].getY()) > (topLeftY)){
+                            quadTreeRender(g2d, branches[i], topLeftX, topLeftY);
+                        }
+                    }
+                    //quadTreeRender(g2d, branches[i], topLeftX, topLeftY);
                 }
             } catch (NullPointerException e) {
                 e.printStackTrace();

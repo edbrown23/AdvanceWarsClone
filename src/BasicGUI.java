@@ -29,6 +29,7 @@ public class BasicGUI extends JFrame {
         while(true){
             this.requestFocus();
             game.setTopCoords(topLeftX, topLeftY);
+            System.out.println(topLeftX + " " + topLeftY);
             game.repaint();
             try{
                 Thread.sleep(10);
