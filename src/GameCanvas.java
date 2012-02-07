@@ -11,14 +11,14 @@ import java.awt.event.MouseListener;
  * To change this template use File | Settings | File Templates.
  */
 public class GameCanvas extends JPanel {
-    private SimpleMap map = new SimpleMap(2048, 1024);
+    private SimpleMap map = new SimpleMap(768, 256);
     private int topLeftX, topLeftY;
     private int selectedX, selectedY = 0;
     private QuadTreeNode[][] roots;
     
     public GameCanvas(String path){
         this.setSize(400, 200);
-        map.createMapFromImage(path);
+        //map.createMapFromImage(path);
         topLeftX = 0;
         topLeftY = 0;
     }

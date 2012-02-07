@@ -32,8 +32,7 @@ public class QuadTree {
     }
 
     public static QuadTreeNode[][] generateQuadTree(QuadTreeNode[][] nodes, int width, int height){
-        int multiplier = 10;
-        if(width == 2 && height == 1){
+        if(width == 3 && height == 1){
             return nodes;
         }else{
             QuadTreeNode[][] tempNodes = new QuadTreeNode[(width / 2)][(height / 2)];
@@ -66,22 +65,6 @@ public class QuadTree {
                     g2d.drawImage(grassSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
                     break;
                 case Trees:
-//                            try {
-//                                QuadTreeNode[] branches = branch.getBranches();
-//                                QuadTreeNode[] subBranches;
-//                                for(int i = 0; i < 4; i++){
-//                                    try {
-//                                        subBranches = branches[i].getBranches();
-//                                        for(int j = 0; j < 4; j++){
-//                                            g2d.drawImage(treeSprite, subBranches[j].getX() - topLeftX, subBranches[j].getY() - topLeftY, subBranches[j].getWidth(), subBranches[j].getHeight(), null);
-//                                        }
-//                                    } catch (Exception e) {
-//                                        g2d.drawImage(treeSprite, branches[i].getX() - topLeftX, branches[i].getY() - topLeftY, branches[i].getWidth(), branches[i].getHeight(), null);
-//                                    }
-//                                }
-//                            } catch (Exception e) {
-//                                g2d.drawImage(treeSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
-//                            }
                     g2d.drawImage(treeSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
                     break;
                 case Mountains:
@@ -92,12 +75,11 @@ public class QuadTree {
             try {
                 QuadTreeNode[] branches = branch.getBranches();
                 for(int i = 0; i < 4; i++){
-                    if((branches[i].getX()) < (topLeftX + 800) && (branches[i].getX()) > topLeftX){
-                        if((branches[i].getY()) < (topLeftY + 400) && (branches[i].getY()) > topLeftY){
+                    if((branches[i].getX() - topLeftX) < (800) && (branches[i].getX() - topLeftX) >= (topLeftX * -1)){
+                        if((branches[i].getY() - topLeftY) < (400) && (branches[i].getY() - topLeftY) >= (topLeftY * -1)){
                             quadTreeRender(g2d, branches[i], topLeftX, topLeftY);
                         }
                     }
-                    //quadTreeRender(g2d, branches[i], topLeftX, topLeftY);
                 }
             } catch (NullPointerException e) {
                 e.printStackTrace();

@@ -19,17 +19,20 @@ public class BasicGUI extends JFrame {
         this.addKeyListener(kHandler);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(850, 500);
+        this.setSize(900, 500);
         this.setVisible(true);
 
         game = new GameCanvas();
-        //game = new GameCanvas("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/forestMap.png");
         this.add(game);
 
+        boolean first = true;
         while(true){
+            if(first){
+                this.setSize(901, 501);
+                first = false;
+            }
             this.requestFocus();
             game.setTopCoords(topLeftX, topLeftY);
-            System.out.println(topLeftX + " " + topLeftY);
             game.repaint();
             try{
                 Thread.sleep(10);
