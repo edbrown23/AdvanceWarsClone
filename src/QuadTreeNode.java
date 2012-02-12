@@ -42,23 +42,13 @@ public class QuadTreeNode {
     }
 
     public boolean checkIdenticalBranches(){
-//        // Better way to do this?
-//        if(UL.getTile().getTileType() == TileTypes.NULL){
-//            return false;
-//        }else if(UR.getTile().getTileType() == TileTypes.NULL){
-//            return false;
-//        }else if(BL.getTile().getTileType() == TileTypes.NULL){
-//            return false;
-//        }else if(BR.getTile().getTileType() == TileTypes.NULL){
-//            return false;
-//        }else{
-//            return true;
-//        }
         TileTypes ulType = UL.getTile();
         TileTypes urType = UR.getTile();
         TileTypes blType = BL.getTile();
         TileTypes brType = BR.getTile();
-        if(ulType == urType){
+        if(ulType == TileTypes.NULL){
+            return false;
+        }else if(ulType == urType){
             if(urType == blType){
                 if(blType == brType){
                     return true;
@@ -70,6 +60,10 @@ public class QuadTreeNode {
 
     public TileTypes getTile(){
         return tile;
+    }
+
+    public TileTypes getBranchType(){
+        return UL.getTile();
     }
 
     public void setTile(TileTypes type){

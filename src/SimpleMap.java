@@ -15,7 +15,7 @@ import java.io.IOException;
 public class SimpleMap {
     private int mapWidth;
     private int mapHeight;
-    private QuadTreeNode[][] mapTreeRoots = new QuadTreeNode[2][1];
+    private QuadTreeNode[][] mapTreeRoots = new QuadTreeNode[3][1];
 
     private int multiplier = 20;
 
@@ -61,7 +61,7 @@ public class SimpleMap {
         mapTreeRoots = QuadTree.generateQuadTree(baseTreeTiles, mapWidth, mapHeight);
     }
 
-    /*
+
     // Deprecated Methods
     public void createMapFromImage(String path){
         try{
@@ -73,9 +73,9 @@ public class SimpleMap {
                     int g = mapColor.getGreen();
                     int b = mapColor.getBlue();
                     if(g == 150 && r == 100){
-                        mapTiles[x][y] = new Tile(false, true, "C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/mountainSprite.png", TileTypes.Mountains);
+                        //mapTiles[x][y] = new Tile(false, true, "C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/mountainSprite.png", TileTypes.Mountains);
                     }else if(g == 150){
-                        mapTiles[x][y] = new Tile(true, false, "C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/grassSprite.png", TileTypes.Grass);
+                        //mapTiles[x][y] = new Tile(true, false, "C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/grassSprite.png", TileTypes.Grass);
                     }
                 }
             }
@@ -87,11 +87,11 @@ public class SimpleMap {
     public void render(Graphics2D g2d, int topLeftX, int topLeftY){
         for(int y = topLeftY; y < (topLeftY + 20); y++){
             for(int x = topLeftX; x < (topLeftX + 40); x++){
-                mapTiles[x][y].render(g2d, (x - topLeftX) * multiplier, (y - topLeftY) * multiplier);
+                //mapTiles[x][y].render(g2d, (x - topLeftX) * multiplier, (y - topLeftY) * multiplier);
             }
         }
     }
-    */
+
 
     public QuadTreeNode[][] getMapTreeRoots(){
         return mapTreeRoots;

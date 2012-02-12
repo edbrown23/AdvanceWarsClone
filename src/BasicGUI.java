@@ -35,7 +35,7 @@ public class BasicGUI extends JFrame {
             game.setTopCoords(topLeftX, topLeftY);
             game.repaint();
             try{
-                Thread.sleep(10);
+                Thread.sleep(30);
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -53,7 +53,7 @@ public class BasicGUI extends JFrame {
         public void keyPressed(KeyEvent e) {
             //To change body of implemented methods use File | Settings | File Templates.
             if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-                if(topLeftX < (2028 * 20) - 400){
+                if(topLeftX < (768 * 20) - 800){
                     topLeftX += 20;
                 }
             }else if(e.getKeyCode() == KeyEvent.VK_LEFT){
@@ -65,9 +65,17 @@ public class BasicGUI extends JFrame {
                     topLeftY -= 20;
                 }
             }else if(e.getKeyCode() == KeyEvent.VK_DOWN){
-                if(topLeftY < (1024 * 20) - 400){
+                if(topLeftY < (256 * 20) - 400){
                     topLeftY += 20;
                 }
+            }else if(e.getKeyCode() == KeyEvent.VK_G){
+                game.changeCell(TileTypes.Grass);
+            }else if(e.getKeyCode() == KeyEvent.VK_M){
+                game.changeCell(TileTypes.Mountains);
+            }else if(e.getKeyCode() == KeyEvent.VK_W){
+                game.changeCell(TileTypes.Water);
+            }else if(e.getKeyCode() == KeyEvent.VK_T){
+                game.changeCell(TileTypes.Trees);
             }
         }
 

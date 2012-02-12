@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by IntelliJ IDEA.
+ * Probably going to be reimplemented. This class should remember if a unit can access a certain tile
  * User: Eric
  * Date: 1/28/12
  * Time: 11:07 PM

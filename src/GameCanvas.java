@@ -50,13 +50,25 @@ public class GameCanvas extends JPanel {
     public void paint(Graphics g){
         Graphics2D g2d = (Graphics2D)g;
 
-        QuadTree.quadTreeRender(g2d, roots[0][0], topLeftX, topLeftY);
-        QuadTree.quadTreeRender(g2d, roots[1][0], topLeftX, topLeftY);
+        if((roots[0][0].getX() - topLeftX) < (800) && (roots[0][0].getX() - topLeftX) >= (topLeftX * -1)){
+            if((roots[0][0].getY() - topLeftY) < (400) && (roots[0][0].getY() - topLeftY) >= (topLeftY * -1)){
+                QuadTree.quadTreeRender(g2d, roots[0][0], topLeftX, topLeftY);
+            }
+        }
+        if((roots[1][0].getX() - topLeftX) < (800) && (roots[1][0].getX() - topLeftX) >= (topLeftX * -1)){
+            if((roots[1][0].getY() - topLeftY) < (400) && (roots[1][0].getY() - topLeftY) >= (topLeftY * -1)){
+                QuadTree.quadTreeRender(g2d, roots[1][0], topLeftX, topLeftY);
+            }
+        }
+        if((roots[2][0].getX() - topLeftX) < (800) && (roots[2][0].getX() - topLeftX) >= (topLeftX * -1)){
+            if((roots[2][0].getY() - topLeftY) < (400) && (roots[2][0].getY() - topLeftY) >= (topLeftY * -1)){
+                QuadTree.quadTreeRender(g2d, roots[2][0], topLeftX, topLeftY);
+            }
+        }
         g2d.setColor(Color.white);
         g2d.fillRect(0, 400, 800, 400);
         g2d.fillRect(800, 0, 400, 800);
         g2d.setColor(Color.black);
-        //map.render(g2d, topLeftX, topLeftY);
         for(int x = 0; x <= 800; x += 20){
             g2d.drawLine(x, 0, x, 400);
         }
@@ -65,6 +77,29 @@ public class GameCanvas extends JPanel {
         }
         //g2d.setColor(Color.green);
         //g2d.fillRect(selectedX, selectedY, 20, 20);
+    }
+    
+    public void changeCell(TileTypes newType){
+        QuadTree.changeCell(roots[0][0], newType);
+        QuadTree.changeCell(roots[1][0], newType);
+        QuadTree.changeCell(roots[2][0], newType);
+
+        QuadTree.compressCells(roots[0][0]);
+        QuadTree.compressCells(roots[1][0]);
+        QuadTree.compressCells(roots[2][0]);
+
+        // The following three repeats shouldn't be necessary, but it's a test
+        QuadTree.compressCells(roots[0][0]);
+        QuadTree.compressCells(roots[1][0]);
+        QuadTree.compressCells(roots[2][0]);
+
+        QuadTree.compressCells(roots[0][0]);
+        QuadTree.compressCells(roots[1][0]);
+        QuadTree.compressCells(roots[2][0]);
+
+        QuadTree.compressCells(roots[0][0]);
+        QuadTree.compressCells(roots[1][0]);
+        QuadTree.compressCells(roots[2][0]);
     }
     
     private class MouseHandler implements MouseListener{
@@ -77,6 +112,7 @@ public class GameCanvas extends JPanel {
             selectedY = topLeftY + y;
             QuadTree.selectTile(roots[0][0], selectedX, selectedY);
             QuadTree.selectTile(roots[1][0], selectedX, selectedY);
+            QuadTree.selectTile(roots[2][0], selectedX, selectedY);
         }
 
         @Override
