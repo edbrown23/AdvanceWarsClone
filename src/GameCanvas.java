@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -65,6 +67,14 @@ public class GameCanvas extends JPanel {
                 QuadTree.quadTreeRender(g2d, roots[2][0], topLeftX, topLeftY);
             }
         }
+        
+        LinkedList<BaseUnit> tempUnits = map.getUnits();
+        Iterator<BaseUnit> iter = tempUnits.iterator();
+        while(iter.hasNext()){
+            BaseUnit renderableUnit = iter.next();
+            renderableUnit.render(g2d);
+        }
+        
         g2d.setColor(Color.white);
         g2d.fillRect(0, 400, 800, 400);
         g2d.fillRect(800, 0, 400, 800);
@@ -79,6 +89,14 @@ public class GameCanvas extends JPanel {
         //g2d.fillRect(selectedX, selectedY, 20, 20);
     }
     
+    public void addUnit(BaseUnit unit){
+        map.addUnit(unit);
+    }
+   
+    public QuadTreeNode getSelectedNode(){
+        return QuadTree.getSelectedNode();
+    }
+
     public void changeCell(TileTypes newType){
         QuadTree.changeCell(roots[0][0], newType);
         QuadTree.changeCell(roots[1][0], newType);
@@ -88,7 +106,7 @@ public class GameCanvas extends JPanel {
         QuadTree.compressCells(roots[1][0]);
         QuadTree.compressCells(roots[2][0]);
 
-        // The following three repeats shouldn't be necessary, but it's a test
+        // The following three repeats shouldn't be necessary, but it's a test. This can definitely be optimized
         QuadTree.compressCells(roots[0][0]);
         QuadTree.compressCells(roots[1][0]);
         QuadTree.compressCells(roots[2][0]);

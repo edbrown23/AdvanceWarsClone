@@ -185,4 +185,8 @@ public class QuadTree {
             }
         }
     }
+
+    public static QuadTreeNode getSelectedNode(){
+        return selectedNode;
+    }
 }

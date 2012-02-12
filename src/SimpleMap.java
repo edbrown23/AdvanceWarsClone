@@ -4,6 +4,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,6 +17,7 @@ public class SimpleMap {
     private int mapWidth;
     private int mapHeight;
     private QuadTreeNode[][] mapTreeRoots = new QuadTreeNode[3][1];
+    private LinkedList<BaseUnit> units = new LinkedList<BaseUnit>();
 
     private int multiplier = 20;
 
@@ -61,6 +63,13 @@ public class SimpleMap {
         mapTreeRoots = QuadTree.generateQuadTree(baseTreeTiles, mapWidth, mapHeight);
     }
 
+    public void addUnit(BaseUnit newUnit){
+        units.add(newUnit);
+    }
+
+    public LinkedList<BaseUnit> getUnits(){
+        return units;
+    }
 
     // Deprecated Methods
     public void createMapFromImage(String path){
