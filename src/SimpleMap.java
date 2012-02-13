@@ -1,9 +1,11 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -18,12 +20,25 @@ public class SimpleMap {
     private int mapHeight;
     private QuadTreeNode[][] mapTreeRoots = new QuadTreeNode[3][1];
     private LinkedList<BaseUnit> units = new LinkedList<BaseUnit>();
+    private boolean[][] fog;
+    private TileTypes[][] referenceTiles;
 
     private int multiplier = 20;
 
     public SimpleMap(int mapWidth, int mapHeight) {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
+        fog = new boolean[mapWidth][mapHeight];
+        for(int y = 0; y < mapHeight; y++){
+            for(int x = 0; x < mapWidth; x++){
+                //if(x % 5 == 1){
+                    //fog[x][y] = false;
+                //}else{
+                    fog[x][y] = true;
+                //}
+            }
+        }
+        referenceTiles = new TileTypes[mapWidth][mapHeight];
     }
 
     /**
@@ -43,15 +58,19 @@ public class SimpleMap {
                 if(grey < waterLevel){
                     baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), TileTypes.Water, 20, 20, x * multiplier, y * multiplier);
                     debugImage.setRGB(x, y, new Color(0, 0, 255).getRGB());
+                    referenceTiles[x][y] = TileTypes.Water;
                 }else if(grey > waterLevel && grey < grassLevel){
                     baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), TileTypes.Grass, 20, 20, x * multiplier, y * multiplier);
                     debugImage.setRGB(x, y, new Color(0, 255, 0).getRGB());
+                    referenceTiles[x][y] = TileTypes.Grass;
                 }else if(grey > grassLevel && grey < treeLevel){
                     baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), TileTypes.Trees, 20, 20, x * multiplier, y * multiplier);
                     debugImage.setRGB(x, y, new Color(50, 150, 50).getRGB());
+                    referenceTiles[x][y] = TileTypes.Trees;
                 }else {
                     baseTreeTiles[x][y] = new QuadTreeNode(new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), new QuadTreeNode(), TileTypes.Mountains, 20, 20, x * multiplier, y * multiplier);
                     debugImage.setRGB(x, y, new Color(150, 100, 25).getRGB());
+                    referenceTiles[x][y] = TileTypes.Mountains;
                 }
             }
         }
@@ -63,8 +82,50 @@ public class SimpleMap {
         mapTreeRoots = QuadTree.generateQuadTree(baseTreeTiles, mapWidth, mapHeight);
     }
 
+    public void renderFog(Graphics2D g2d, int topLeftX, int topLeftY){
+        for(int y = topLeftY; y < (topLeftY + 400); y += 20){
+            for(int x = topLeftX; x < (topLeftX + 800); x += 20){
+                if(fog[Math.round(x / 20)][Math.round(y / 20)]){
+                    g2d.setColor(new Color(0, 0, 0, 200));
+                    g2d.fillRect(x - topLeftX, y - topLeftY, 20, 20);
+                }else{
+                    g2d.setColor(new Color(0, 255, 0, 0));
+                    g2d.fillRect(x - topLeftX, y - topLeftY, 20, 20);
+                }
+            }
+        }
+    }
+
     public void addUnit(BaseUnit newUnit){
         units.add(newUnit);
+    }
+
+    public void calculateFog(){
+        for(BaseUnit currentUnit : units){
+            for(float degree = 0; degree < 2 * Math.PI; degree += Math.PI / 8){
+                LinkedList<Point2D.Float> fogPoints = new LinkedList<Point2D.Float>();
+                float x = (float)Math.cos(degree) + currentUnit.getxPosition();
+                float y = (float)Math.sin(degree) + currentUnit.getyPosition();
+                fogPoints.add(new Point2D.Float(x, y));
+
+            }
+            int radius = currentUnit.getVisionMax();
+            for(int degree = 0; degree < 360; degree += 45){
+                for(int dist = 0; dist < radius; dist++){
+                    int x = (int)Math.round(Math.cos((degree * Math.PI) / 180)) * dist * 20;
+                    int y = (int)Math.round(Math.sin((degree * Math.PI) / 180)) * dist * 20;
+                    int refX = Math.round((currentUnit.getxPosition() + x) / 20);
+                    int refY = Math.round((currentUnit.getyPosition() + y) / 20);
+                    TileTypes temp = referenceTiles[refX][refY];
+                    if(temp == TileTypes.Mountains || temp == TileTypes.Trees){
+                        break;
+                    }else{
+                        fog[refX][refY] = false;
+                    }
+                }
+            }
+        }
+
     }
 
     public LinkedList<BaseUnit> getUnits(){

@@ -1,8 +1,6 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 
@@ -25,13 +23,48 @@ public class QuadTree {
      */
     public static void setupSprites(){
         try{
-            waterSprite = ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/waterSprite.png"));
-            grassSprite = ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/grassSprite.png"));
-            treeSprite = ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/treeSprite.png"));
-            mountainSprite = ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/mountainSprite.png"));
+            waterSprite = toCompatibleImage(ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/waterSprite.png")));
+            grassSprite = toCompatibleImage(ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/grassSprite.png")));
+            treeSprite = toCompatibleImage(ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/treeSprite.png")));
+            mountainSprite = toCompatibleImage(ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/mountainSprite.png")));
         }catch(IOException e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Optimizes BufferedImage for current Context
+     * Borrowed from http://stackoverflow.com/questions/196890/java2d-performance-issues, Consty's solution
+     * @param image The input image
+     * @return the output image
+     */
+    private static BufferedImage toCompatibleImage(BufferedImage image)
+    {
+        // obtain the current system graphical settings
+        GraphicsConfiguration gfx_config = GraphicsEnvironment.
+                getLocalGraphicsEnvironment().getDefaultScreenDevice().
+                getDefaultConfiguration();
+
+        /*
+         * if image is already compatible and optimized for current system
+         * settings, simply return it
+         */
+        if (image.getColorModel().equals(gfx_config.getColorModel()))
+            return image;
+
+        // image is not optimized, so create a new image that is
+        BufferedImage new_image = gfx_config.createCompatibleImage(
+                image.getWidth(), image.getHeight(), image.getTransparency());
+
+        // get the graphics context of the new image to draw the old image on
+        Graphics2D g2d = (Graphics2D) new_image.getGraphics();
+
+        // actually draw the image and dispose of context no longer needed
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+
+        // return the new optimized image
+        return new_image;
     }
 
     /**
@@ -96,8 +129,8 @@ public class QuadTree {
             try {
                 QuadTreeNode[] branches = branch.getBranches();
                 for(int i = 0; i < 4; i++){
-                    if((branches[i].getX() - topLeftX) < (800) && (branches[i].getX() - topLeftX) >= (topLeftX * -1)){
-                        if((branches[i].getY() - topLeftY) < (400) && (branches[i].getY() - topLeftY) >= (topLeftY * -1)){
+                    if((branches[i].getX() - topLeftX) < (800) && (branches[i].getX() + branches[i].getWidth() - topLeftX) >= 0){
+                        if((branches[i].getY() - topLeftY) < (400) && (branches[i].getY() + branches[i].getHeight() - topLeftY) >= 0){
                             quadTreeRender(g2d, branches[i], topLeftX, topLeftY);
                         }
                     }
@@ -167,6 +200,10 @@ public class QuadTree {
         }
     }
 
+    /**
+     * Compresses cells around the selected cell, but only up 1 level. This can probably be optimized
+     * @param branch The branch being compressed
+     */
     public static void compressCells(QuadTreeNode branch){
         if(branch.checkIdenticalBranches()){
             branch.setTile(branch.getBranchType());
@@ -184,6 +221,32 @@ public class QuadTree {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static TileTypes getTileType(QuadTreeNode branch, int desiredX, int desiredY){
+        // If the width and height = 20, then a leaf has been found, so check if it's the right one
+        if(branch.getWidth() == 20 && branch.getHeight() == 20){
+            if(desiredX >= branch.getX() && desiredX <= (branch.getX() + branch.getWidth())){
+                if(desiredY >= branch.getY() && desiredY <= (branch.getY() + branch.getHeight())){
+                    return branch.getTile();
+                }
+            }
+        }else{
+            // Still in a branch, so find sub branches and recurse with appropriate sub branch
+            try{
+                QuadTreeNode[] branches = branch.getBranches();
+                for(int i = 0; i < 4; i++){
+                    if(desiredX >= branches[i].getX() && desiredX <= (branches[i].getX() + branches[i].getWidth())){
+                        if(desiredY >= branches[i].getY() && desiredY <= (branches[i].getY() + branches[i].getHeight())){
+                            selectTile(branches[i], desiredX, desiredY);
+                        }
+                    }
+                }
+            }catch(NullPointerException e){
+                e.printStackTrace();
+            }
+        }
+        return TileTypes.NULL;
     }
 
     public static QuadTreeNode getSelectedNode(){

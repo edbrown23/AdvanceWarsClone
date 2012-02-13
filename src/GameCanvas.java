@@ -52,29 +52,29 @@ public class GameCanvas extends JPanel {
     public void paint(Graphics g){
         Graphics2D g2d = (Graphics2D)g;
 
-        if((roots[0][0].getX() - topLeftX) < (800) && (roots[0][0].getX() - topLeftX) >= (topLeftX * -1)){
-            if((roots[0][0].getY() - topLeftY) < (400) && (roots[0][0].getY() - topLeftY) >= (topLeftY * -1)){
+        if((roots[0][0].getX() - topLeftX) < (800) && (roots[0][0].getX() + roots[0][0].getWidth() - topLeftX) >= 0){
+            if((roots[0][0].getY() - topLeftY) < (400) && (roots[0][0].getY() + roots[0][0].getHeight() - topLeftY) >= 0){
                 QuadTree.quadTreeRender(g2d, roots[0][0], topLeftX, topLeftY);
             }
         }
-        if((roots[1][0].getX() - topLeftX) < (800) && (roots[1][0].getX() - topLeftX) >= (topLeftX * -1)){
-            if((roots[1][0].getY() - topLeftY) < (400) && (roots[1][0].getY() - topLeftY) >= (topLeftY * -1)){
+        if((roots[1][0].getX() - topLeftX) < (800) && (roots[1][0].getX() + roots[1][0].getWidth() - topLeftX) >= 0){
+            if((roots[1][0].getY() - topLeftY) < (400) && (roots[1][0].getY() + roots[1][0].getHeight() - topLeftY) >= 0){
                 QuadTree.quadTreeRender(g2d, roots[1][0], topLeftX, topLeftY);
             }
         }
-        if((roots[2][0].getX() - topLeftX) < (800) && (roots[2][0].getX() - topLeftX) >= (topLeftX * -1)){
-            if((roots[2][0].getY() - topLeftY) < (400) && (roots[2][0].getY() - topLeftY) >= (topLeftY * -1)){
+        if((roots[2][0].getX() - topLeftX) < (800) && (roots[2][0].getX() + roots[2][0].getWidth() - topLeftX) >= 0){
+            if((roots[2][0].getY() - topLeftY) < (400) && (roots[2][0].getY() + roots[2][0].getHeight() - topLeftY) >= 0){
                 QuadTree.quadTreeRender(g2d, roots[2][0], topLeftX, topLeftY);
             }
         }
-        
-        LinkedList<BaseUnit> tempUnits = map.getUnits();
-        Iterator<BaseUnit> iter = tempUnits.iterator();
-        while(iter.hasNext()){
-            BaseUnit renderableUnit = iter.next();
-            renderableUnit.render(g2d);
+
+        for(BaseUnit currentUnit : map.getUnits()){
+            currentUnit.render(g2d, topLeftX, topLeftY);
         }
-        
+
+        map.calculateFog();
+        map.renderFog(g2d, topLeftX, topLeftY);
+
         g2d.setColor(Color.white);
         g2d.fillRect(0, 400, 800, 400);
         g2d.fillRect(800, 0, 400, 800);

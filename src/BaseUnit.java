@@ -15,11 +15,12 @@ public abstract class BaseUnit {
     protected int health;
     protected int attackPower;
     protected Facing facingDirection;
+    protected int visionMax;
     protected BufferedImage sprite;
     protected int xPosition;
     protected int yPosition;
 
-    protected BaseUnit(int health, int attackPower, Facing facingDirection, int xPosition, String spritePath, int yPosition) {
+    protected BaseUnit(int health, int attackPower, Facing facingDirection, int xPosition, String spritePath, int yPosition, int visionMax) {
         try {
             BufferedImage temp = ImageIO.read(new File(spritePath));
             sprite = new BufferedImage(temp.getWidth(), temp.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -43,13 +44,14 @@ public abstract class BaseUnit {
             this.facingDirection = facingDirection;
             this.xPosition = xPosition;
             this.yPosition = yPosition;
+            this.visionMax = visionMax;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     
-    public void render(Graphics2D g2d){
-        g2d.drawImage(sprite, xPosition, yPosition, 20, 20, null);
+    public void render(Graphics2D g2d, int topLeftX, int topLeftY){
+        g2d.drawImage(sprite, xPosition - topLeftX, yPosition - topLeftY, 20, 20, null);
     }
 
     public int getAttackPower() {
@@ -100,4 +102,11 @@ public abstract class BaseUnit {
         this.yPosition = yPosition;
     }
 
+    public int getVisionMax() {
+        return visionMax;
+    }
+
+    public void setVisionMax(int visionMax) {
+        this.visionMax = visionMax;
+    }
 }
