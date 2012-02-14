@@ -102,18 +102,18 @@ public class SimpleMap {
 
     public void calculateFog(){
         for(BaseUnit currentUnit : units){
-            for(float degree = 0; degree < 2 * Math.PI; degree += Math.PI / 8){
-                LinkedList<Point2D.Float> fogPoints = new LinkedList<Point2D.Float>();
-                float x = (float)Math.cos(degree) + currentUnit.getxPosition();
-                float y = (float)Math.sin(degree) + currentUnit.getyPosition();
-                fogPoints.add(new Point2D.Float(x, y));
-
-            }
+//            for(float degree = 0; degree < 2 * Math.PI; degree += Math.PI / 8){
+//                LinkedList<Point2D.Float> fogPoints = new LinkedList<Point2D.Float>();
+//                float x = (float)Math.cos(degree) + currentUnit.getxPosition();
+//                float y = (float)Math.sin(degree) + currentUnit.getyPosition();
+//                fogPoints.add(new Point2D.Float(x, y));
+//
+//            }
             int radius = currentUnit.getVisionMax();
-            for(int degree = 0; degree < 360; degree += 45){
+            for(float degree = 0; degree < 2.0f * Math.PI; degree += Math.PI / 32.0f){
                 for(int dist = 0; dist < radius; dist++){
-                    int x = (int)Math.round(Math.cos((degree * Math.PI) / 180)) * dist * 20;
-                    int y = (int)Math.round(Math.sin((degree * Math.PI) / 180)) * dist * 20;
+                    float x = (float)(Math.cos(degree) * dist * 20.0f);
+                    float y = (float)(Math.sin(degree) * dist * 20.0f);
                     int refX = Math.round((currentUnit.getxPosition() + x) / 20);
                     int refY = Math.round((currentUnit.getyPosition() + y) / 20);
                     TileTypes temp = referenceTiles[refX][refY];
