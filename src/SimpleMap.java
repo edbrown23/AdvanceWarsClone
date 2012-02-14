@@ -82,10 +82,35 @@ public class SimpleMap {
         mapTreeRoots = QuadTree.generateQuadTree(baseTreeTiles, mapWidth, mapHeight);
     }
 
+    public void render(Graphics2D g2d, int topLeftX, int topLeftY){
+        if((mapTreeRoots[0][0].getX() - topLeftX) < (800) && (mapTreeRoots[0][0].getX() + mapTreeRoots[0][0].getWidth() - topLeftX) >= 0){
+            if((mapTreeRoots[0][0].getY() - topLeftY) < (400) && (mapTreeRoots[0][0].getY() + mapTreeRoots[0][0].getHeight() - topLeftY) >= 0){
+                QuadTree.quadTreeRender(g2d, mapTreeRoots[0][0], topLeftX, topLeftY);
+            }
+        }
+        if((mapTreeRoots[1][0].getX() - topLeftX) < (800) && (mapTreeRoots[1][0].getX() + mapTreeRoots[1][0].getWidth() - topLeftX) >= 0){
+            if((mapTreeRoots[1][0].getY() - topLeftY) < (400) && (mapTreeRoots[1][0].getY() + mapTreeRoots[1][0].getHeight() - topLeftY) >= 0){
+                QuadTree.quadTreeRender(g2d, mapTreeRoots[1][0], topLeftX, topLeftY);
+            }
+        }
+        if((mapTreeRoots[2][0].getX() - topLeftX) < (800) && (mapTreeRoots[2][0].getX() + mapTreeRoots[2][0].getWidth() - topLeftX) >= 0){
+            if((mapTreeRoots[2][0].getY() - topLeftY) < (400) && (mapTreeRoots[2][0].getY() + mapTreeRoots[2][0].getHeight() - topLeftY) >= 0){
+                QuadTree.quadTreeRender(g2d, mapTreeRoots[2][0], topLeftX, topLeftY);
+            }
+        }
+
+        for(BaseUnit currentUnit : units){
+            currentUnit.render(g2d, topLeftX, topLeftY);
+        }
+        
+        this.calculateFog(topLeftX, topLeftY);
+        this.renderFog(g2d, topLeftX, topLeftY);    
+    }
+    
     public void renderFog(Graphics2D g2d, int topLeftX, int topLeftY){
         for(int y = topLeftY; y < (topLeftY + 400); y += 20){
             for(int x = topLeftX; x < (topLeftX + 800); x += 20){
-                if(fog[Math.round(x / 20)][Math.round(y / 20)]){
+                if(fog[Math.round(x / 20.0f)][Math.round(y / 20.0f)]){
                     g2d.setColor(new Color(0, 0, 0, 200));
                     g2d.fillRect(x - topLeftX, y - topLeftY, 20, 20);
                 }else{
@@ -100,15 +125,15 @@ public class SimpleMap {
         units.add(newUnit);
     }
 
-    public void calculateFog(){
+    public void calculateFog(int topLeftX, int topLeftY){
+        for(int y = topLeftY; y < (topLeftY + 400); y += 20){
+            for(int x = topLeftX; x < (topLeftX + 800); x += 20){
+                if(!fog[Math.round(x / 20.0f)][Math.round(y / 20.0f)]){
+                    fog[Math.round(x / 20.0f)][Math.round(y / 20.0f)] = true;
+                }
+            }
+        }
         for(BaseUnit currentUnit : units){
-//            for(float degree = 0; degree < 2 * Math.PI; degree += Math.PI / 8){
-//                LinkedList<Point2D.Float> fogPoints = new LinkedList<Point2D.Float>();
-//                float x = (float)Math.cos(degree) + currentUnit.getxPosition();
-//                float y = (float)Math.sin(degree) + currentUnit.getyPosition();
-//                fogPoints.add(new Point2D.Float(x, y));
-//
-//            }
             int radius = currentUnit.getVisionMax();
             for(float degree = 0; degree < 2.0f * Math.PI; degree += Math.PI / 32.0f){
                 for(int dist = 0; dist < radius; dist++){
@@ -128,6 +153,29 @@ public class SimpleMap {
 
     }
 
+    public void changeCell(TileTypes newType){
+        QuadTree.changeCell(mapTreeRoots[0][0], newType);
+        QuadTree.changeCell(mapTreeRoots[1][0], newType);
+        QuadTree.changeCell(mapTreeRoots[2][0], newType);
+
+        QuadTree.compressCells(mapTreeRoots[0][0]);
+        QuadTree.compressCells(mapTreeRoots[1][0]);
+        QuadTree.compressCells(mapTreeRoots[2][0]);
+
+        // The following three repeats shouldn't be necessary, but it's a test. This can definitely be optimized
+        QuadTree.compressCells(mapTreeRoots[0][0]);
+        QuadTree.compressCells(mapTreeRoots[1][0]);
+        QuadTree.compressCells(mapTreeRoots[2][0]);
+
+        QuadTree.compressCells(mapTreeRoots[0][0]);
+        QuadTree.compressCells(mapTreeRoots[1][0]);
+        QuadTree.compressCells(mapTreeRoots[2][0]);
+
+        QuadTree.compressCells(mapTreeRoots[0][0]);
+        QuadTree.compressCells(mapTreeRoots[1][0]);
+        QuadTree.compressCells(mapTreeRoots[2][0]);
+    }
+    
     public LinkedList<BaseUnit> getUnits(){
         return units;
     }
@@ -153,15 +201,6 @@ public class SimpleMap {
             e.printStackTrace();
         }
     }
-
-    public void render(Graphics2D g2d, int topLeftX, int topLeftY){
-        for(int y = topLeftY; y < (topLeftY + 20); y++){
-            for(int x = topLeftX; x < (topLeftX + 40); x++){
-                //mapTiles[x][y].render(g2d, (x - topLeftX) * multiplier, (y - topLeftY) * multiplier);
-            }
-        }
-    }
-
 
     public QuadTreeNode[][] getMapTreeRoots(){
         return mapTreeRoots;

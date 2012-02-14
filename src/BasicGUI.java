@@ -10,7 +10,7 @@ import java.awt.event.KeyListener;
  * To change this template use File | Settings | File Templates.
  */
 public class BasicGUI extends JFrame {
-    private GameCanvas game;
+    private GameStateMachine gameMachine = new GameStateMachine();
     private int topLeftX = 0;
     private int topLeftY = 0;
 
@@ -22,15 +22,12 @@ public class BasicGUI extends JFrame {
         this.setSize(900, 500);
         this.setVisible(true);
 
-        game = new GameCanvas();
-        this.add(game);
+        gameMachine.addState(new InMapState(-1));
 
+        this.setSize(901, 501);
         boolean first = true;
         while(true){
-            if(first){
-                this.setSize(901, 501);
-                first = false;
-            }
+
             this.requestFocus();
             game.setTopCoords(topLeftX, topLeftY);
             game.repaint();
