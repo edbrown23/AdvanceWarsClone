@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
 /**
@@ -10,22 +11,46 @@ import java.util.LinkedList;
  */
 public class GameStateMachine {
     private GameState currentState;
-    private double currentStateElapsedTime;
+    private double currentStateElapsedTime = 0.0;
     private LinkedList<GameState> stateQueue = new LinkedList<GameState>();
-    
+
+    /**
+     * Adds state to queue, and sets current state to the added state
+     * @param newState the new state
+     */
     public void addState(GameState newState){
-        stateQueue.add(newState);
+        stateQueue.addLast(newState);
     }
-    
-    public void renderCurrentState(Graphics2D g2d, double elapsedTime, int topLeftX, int topLeftY){
+
+    public void rotateState(){
+        if(currentState != null){
+            stateQueue.addLast(currentState);
+        }
+        currentState = stateQueue.remove();
+    }
+
+    public void changeState(GameState state){
+        currentState = state;
+    }
+
+    public void updateCurrentState(double elapsedTime){
         currentStateElapsedTime += elapsedTime;
-        if(currentState.getTimeOut() == -1){
-            currentState.render(g2d, elapsedTime, topLeftX, topLeftY);
+        if(currentStateElapsedTime > currentState.getTimeOut() && currentState.getTimeOut() != -1){
+            currentStateElapsedTime = 0.0;
+            currentState = stateQueue.remove();
         }
-        if(currentStateElapsedTime >= currentState.getTimeOut()){
-            stateQueue.removeFirst();
-            currentState = stateQueue.peek();
-            currentState.render(g2d, elapsedTime, topLeftX, topLeftY);
-        }
+        currentState.update(elapsedTime);
+    }
+
+    public void renderCurrentState(){
+        currentState.render();
+    }
+
+    public GameState getCurrentState(){
+        return currentState;
+    }
+
+    public void informStateofInput(KeyEvent keyEvent){
+        currentState.setKeyboardState(keyEvent);
     }
 }

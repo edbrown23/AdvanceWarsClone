@@ -13,10 +13,9 @@ import java.util.LinkedList;
  * To change this template use File | Settings | File Templates.
  */
 public class GameCanvas extends JPanel {
-    private SimpleMap map = new SimpleMap(768, 256);
+    private SimpleMap map;
     private int topLeftX, topLeftY;
     private int selectedX, selectedY = 0;
-    private double elapsedTime;
     private QuadTreeNode[][] roots;
     
     public GameCanvas(String path){
@@ -26,7 +25,8 @@ public class GameCanvas extends JPanel {
         topLeftY = 0;
     }
     
-    public GameCanvas(){
+    public GameCanvas(int width, int height){
+        map = new SimpleMap(width, height);
         this.setSize(400, 200);
         map.createMapFromPerlinNoise(100, 150, 200, 255);
         QuadTree.setupSprites();
@@ -80,7 +80,7 @@ public class GameCanvas extends JPanel {
     }
 
     public void setElapsedTime(double elapsedTime){
-        this.elapsedTime = elapsedTime;
+        map.setTimeOfDay((map.getTimeOfDay() + elapsedTime / 100) % (2 * Math.PI));
     }
 
     private class MouseHandler implements MouseListener{

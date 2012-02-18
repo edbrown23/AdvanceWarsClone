@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -11,31 +12,46 @@ import java.awt.event.KeyListener;
  */
 public class BasicGUI extends JFrame {
     private GameStateMachine gameMachine = new GameStateMachine();
-    private int topLeftX = 0;
-    private int topLeftY = 0;
+    private boolean isRunning = true;
 
     public BasicGUI(){
         KeyHandler kHandler = new KeyHandler();
         this.addKeyListener(kHandler);
+        this.setLayout(new BorderLayout());
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(900, 500);
         this.setVisible(true);
 
-        gameMachine.addState(new InMapState(-1));
-
+        WorldEditState worldEditState = new WorldEditState(-1, 768, 256);
+        gameMachine.addState(worldEditState);
+        UnitMovementState unitMovementState = new UnitMovementState(-1, worldEditState);
+        gameMachine.addState(unitMovementState);
+        gameMachine.rotateState();
+        this.add(gameMachine.getCurrentState().getGUIComponent(), BorderLayout.CENTER);
         this.setSize(901, 501);
-        boolean first = true;
-        while(true){
 
-            this.requestFocus();
-            game.setTopCoords(topLeftX, topLeftY);
-            game.repaint();
-            try{
-                Thread.sleep(30);
-            }catch(InterruptedException e){
-                e.printStackTrace();
+        double MAXFPS = 1000000000 / 60.0f; // should stand for 30 frames per second
+
+        double currentTime = 0.0, elapsedTime = 0.0;
+
+        while(isRunning){
+
+            currentTime = System.nanoTime();
+            gameMachine.updateCurrentState(elapsedTime / 1000000); // change nanoseconds to milliseconds
+            gameMachine.renderCurrentState();
+            elapsedTime = System.nanoTime() - currentTime;
+
+            // If it took less than the fps to render and update, sleep for the rest of the time
+            if(elapsedTime < MAXFPS){
+                int milliElapsedTime = (int)((MAXFPS - elapsedTime) / 1000000);
+                try{
+                    Thread.sleep(milliElapsedTime);
+                }catch(InterruptedException e){
+                    e.printStackTrace();
+                }
             }
+            this.requestFocus();
         }
     }
 
@@ -48,33 +64,12 @@ public class BasicGUI extends JFrame {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            //To change body of implemented methods use File | Settings | File Templates.
-            if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-                if(topLeftX < (768 * 20) - 800){
-                    topLeftX += 20;
-                }
-            }else if(e.getKeyCode() == KeyEvent.VK_LEFT){
-                if(topLeftX > 0){
-                    topLeftX -= 20;
-                }
-            }else if(e.getKeyCode() == KeyEvent.VK_UP){
-                if(topLeftY > 0){
-                    topLeftY -= 20;
-                }
-            }else if(e.getKeyCode() == KeyEvent.VK_DOWN){
-                if(topLeftY < (256 * 20) - 400){
-                    topLeftY += 20;
-                }
-            }else if(e.getKeyCode() == KeyEvent.VK_G){
-                game.changeCell(TileTypes.Grass);
-            }else if(e.getKeyCode() == KeyEvent.VK_M){
-                game.changeCell(TileTypes.Mountains);
-            }else if(e.getKeyCode() == KeyEvent.VK_W){
-                game.changeCell(TileTypes.Water);
-            }else if(e.getKeyCode() == KeyEvent.VK_T){
-                game.changeCell(TileTypes.Trees);
-            }else if(e.getKeyCode() == KeyEvent.VK_B){
-                game.addUnit(new Infantry(10, 10, Facing.East, game.getSelectedNode().getX(), "Sprites/Infantry.png", game.getSelectedNode().getY(), 5));
+            if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+                isRunning = false;
+            }else if(e.getKeyCode() == KeyEvent.VK_U){
+                gameMachine.rotateState();
+            }else{
+                gameMachine.informStateofInput(e);
             }
         }
 

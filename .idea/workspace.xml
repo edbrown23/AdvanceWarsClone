@@ -63,10 +63,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="QuadTree.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/QuadTree.java">
+      <file leaf-file-name="GameStateMachine.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/GameStateMachine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="98" column="20" selection-start="4754" selection-end="5105" vertical-scroll-proportion="-85.5">
+            <state line="28" column="0" selection-start="762" selection-end="762" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#411#422#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UnitMovementState.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/UnitMovementState.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="51" column="38" selection-start="1538" selection-end="1538" vertical-scroll-proportion="1.2793177">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -74,37 +85,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TileTypes.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/TileTypes.java">
+      <file leaf-file-name="GameState.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/GameState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="6" selection-start="3" selection-end="3" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="24" column="0" selection-start="584" selection-end="584" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Tile.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Tile.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="101" selection-start="318" selection-end="318" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GameCanvas.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="GameCanvas.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/GameCanvas.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="66" column="42" selection-start="2226" selection-end="2226" vertical-scroll-proportion="0.8797814">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="QuadTreeNode.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/QuadTreeNode.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="54" column="14" selection-start="1489" selection-end="1489" vertical-scroll-proportion="0.0">
+            <state line="41" column="0" selection-start="1126" selection-end="1126" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -113,8 +108,21 @@
       <file leaf-file-name="BasicGUI.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/BasicGUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="34" selection-start="1019" selection-end="1019" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="37" column="0" selection-start="1238" selection-end="1238" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="method#keyTyped#0;class#KeyHandler#0;class#BasicGUI#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WorldEditState.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/WorldEditState.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="61" column="0" selection-start="2139" selection-end="2139" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -122,7 +130,25 @@
       <file leaf-file-name="SimpleMap.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/SimpleMap.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="77" column="26" selection-start="3978" selection-end="3978" vertical-scroll-proportion="0.0">
+            <state line="214" column="0" selection-start="9968" selection-end="9968" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BaseUnit.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/BaseUnit.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="21" column="118" selection-start="538" selection-end="538" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Infantry.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Infantry.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="12" column="93" selection-start="465" selection-end="465" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -143,22 +169,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/Facing.java" />
-        <option value="$PROJECT_DIR$/src/BaseUnit.java" />
-        <option value="$PROJECT_DIR$/src/MenuStateMachine.java" />
-        <option value="$PROJECT_DIR$/src/MenuState.java" />
-        <option value="$PROJECT_DIR$/README" />
-        <option value="$PROJECT_DIR$/src/GrassTile.java" />
-        <option value="$PROJECT_DIR$/src/testRun.java" />
-        <option value="$PROJECT_DIR$/src/ForestTile.java" />
         <option value="$PROJECT_DIR$/src/PerlinNoise.java" />
         <option value="$PROJECT_DIR$/src/TileTypes.java" />
         <option value="$PROJECT_DIR$/src/Tile.java" />
-        <option value="$PROJECT_DIR$/src/SimpleMap.java" />
         <option value="$PROJECT_DIR$/src/QuadTreeNode.java" />
+        <option value="$PROJECT_DIR$/src/Infantry.java" />
         <option value="$PROJECT_DIR$/src/QuadTree.java" />
-        <option value="$PROJECT_DIR$/src/BasicGUI.java" />
+        <option value="$PROJECT_DIR$/src/BaseUnit.java" />
+        <option value="$PROJECT_DIR$/src/InMapState.java" />
+        <option value="$PROJECT_DIR$/src/WorldEditMode.java" />
+        <option value="$PROJECT_DIR$/src/GameState.java" />
         <option value="$PROJECT_DIR$/src/GameCanvas.java" />
+        <option value="$PROJECT_DIR$/src/UnitMovementState.java" />
+        <option value="$PROJECT_DIR$/src/WorldEditState.java" />
+        <option value="$PROJECT_DIR$/src/BasicGUI.java" />
+        <option value="$PROJECT_DIR$/src/SimpleMap.java" />
+        <option value="$PROJECT_DIR$/src/GameStateMachine.java" />
       </list>
     </option>
   </component>
@@ -168,8 +194,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
+    <option name="width" value="1456" />
+    <option name="height" value="876" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -197,7 +223,7 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -232,7 +258,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -429,23 +455,23 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
+    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34871796" sideWeight="0.49812934" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39910814" sideWeight="0.49812934" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34867504" sideWeight="0.49812934" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32775453" sideWeight="0.07260963" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32887402" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32775453" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16400911" sideWeight="0.6717949" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32820514" sideWeight="0.9992413" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16391085" sideWeight="0.6717949" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30822873" sideWeight="0.92235804" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32914925" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -509,31 +535,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Facing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="12" selection-start="163" selection-end="163" vertical-scroll-proportion="0.20289855" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/BaseUnit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="4" selection-start="768" selection-end="768" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="116" selection-start="116" selection-end="116" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MenuStateMachine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="73" selection-start="1001" selection-end="1001" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MenuState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="23" selection-start="575" selection-end="575" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/testRun.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="38" selection-start="207" selection-end="207" vertical-scroll-proportion="0.0" />
@@ -544,61 +545,99 @@
         <state line="13" column="82" selection-start="430" selection-end="430" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Tile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="101" selection-start="318" selection-end="318" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/SimpleMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="26" selection-start="3978" selection-end="3978" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/TileTypes.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="6" selection-start="3" selection-end="3" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/QuadTreeNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="14" selection-start="1489" selection-end="1489" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/BasicGUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="34" selection-start="1019" selection-end="1019" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/QuadTree.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="98" column="20" selection-start="4754" selection-end="5105" vertical-scroll-proportion="-85.5">
+        <state line="255" column="0" selection-start="11711" selection-end="11711" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TileTypes.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="6" selection-start="3" selection-end="3" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BaseUnit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="118" selection-start="538" selection-end="538" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Infantry.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="93" selection-start="465" selection-end="465" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/QuadTreeNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="54" column="14" selection-start="1489" selection-end="1489" vertical-scroll-proportion="0.028985508">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Tile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="101" selection-start="318" selection-end="318" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GameState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="0" selection-start="584" selection-end="584" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/SimpleMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="214" column="0" selection-start="9968" selection-end="9968" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/GameCanvas.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="42" selection-start="2226" selection-end="2226" vertical-scroll-proportion="0.8797814">
+        <state line="41" column="0" selection-start="1126" selection-end="1126" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/WorldEditState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="61" column="0" selection-start="2139" selection-end="2139" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BasicGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="0" selection-start="1238" selection-end="1238" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="method#keyTyped#0;class#KeyHandler#0;class#BasicGUI#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GameStateMachine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="0" selection-start="762" selection-end="762" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#411#422#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UnitMovementState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="38" selection-start="1538" selection-end="1538" vertical-scroll-proportion="1.2793177">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

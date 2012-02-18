@@ -22,7 +22,7 @@ public class SimpleMap {
     private LinkedList<BaseUnit> units = new LinkedList<BaseUnit>();
     private boolean[][] fog;
     private TileTypes[][] referenceTiles;
-
+    private double timeOfDay;
     private int multiplier = 20;
 
     public SimpleMap(int mapWidth, int mapHeight) {
@@ -31,11 +31,7 @@ public class SimpleMap {
         fog = new boolean[mapWidth][mapHeight];
         for(int y = 0; y < mapHeight; y++){
             for(int x = 0; x < mapWidth; x++){
-                //if(x % 5 == 1){
-                    //fog[x][y] = false;
-                //}else{
-                    fog[x][y] = true;
-                //}
+                fog[x][y] = true;
             }
         }
         referenceTiles = new TileTypes[mapWidth][mapHeight];
@@ -102,16 +98,17 @@ public class SimpleMap {
         for(BaseUnit currentUnit : units){
             currentUnit.render(g2d, topLeftX, topLeftY);
         }
-        
+
         this.calculateFog(topLeftX, topLeftY);
-        this.renderFog(g2d, topLeftX, topLeftY);    
+        this.renderFog(g2d, topLeftX, topLeftY);
     }
-    
+
     public void renderFog(Graphics2D g2d, int topLeftX, int topLeftY){
+        int fogScale = (int)((Math.sin(timeOfDay) + 1) * 100);
         for(int y = topLeftY; y < (topLeftY + 400); y += 20){
             for(int x = topLeftX; x < (topLeftX + 800); x += 20){
                 if(fog[Math.round(x / 20.0f)][Math.round(y / 20.0f)]){
-                    g2d.setColor(new Color(0, 0, 0, 200));
+                    g2d.setColor(new Color(0, 0, 0, fogScale));
                     g2d.fillRect(x - topLeftX, y - topLeftY, 20, 20);
                 }else{
                     g2d.setColor(new Color(0, 255, 0, 0));
@@ -141,11 +138,13 @@ public class SimpleMap {
                     float y = (float)(Math.sin(degree) * dist * 20.0f);
                     int refX = Math.round((currentUnit.getxPosition() + x) / 20);
                     int refY = Math.round((currentUnit.getyPosition() + y) / 20);
-                    TileTypes temp = referenceTiles[refX][refY];
-                    if(temp == TileTypes.Mountains || temp == TileTypes.Trees){
-                        break;
-                    }else{
-                        fog[refX][refY] = false;
+                    if(refX >= 0 && refY >= 0 && refX < 400 && refY < 200){
+                        TileTypes temp = referenceTiles[refX][refY];
+                        if(temp == TileTypes.Mountains || temp == TileTypes.Trees){
+                            break;
+                        }else{
+                            fog[refX][refY] = false;
+                        }
                     }
                 }
             }
@@ -154,6 +153,7 @@ public class SimpleMap {
     }
 
     public void changeCell(TileTypes newType){
+        referenceTiles[QuadTree.getSelectedNode().getX() / 20][QuadTree.getSelectedNode().getY() / 20] = newType;
         QuadTree.changeCell(mapTreeRoots[0][0], newType);
         QuadTree.changeCell(mapTreeRoots[1][0], newType);
         QuadTree.changeCell(mapTreeRoots[2][0], newType);
@@ -175,7 +175,7 @@ public class SimpleMap {
         QuadTree.compressCells(mapTreeRoots[1][0]);
         QuadTree.compressCells(mapTreeRoots[2][0]);
     }
-    
+
     public LinkedList<BaseUnit> getUnits(){
         return units;
     }
@@ -204,5 +204,13 @@ public class SimpleMap {
 
     public QuadTreeNode[][] getMapTreeRoots(){
         return mapTreeRoots;
+    }
+    
+    public double getTimeOfDay(){
+        return timeOfDay;
+    }
+    
+    public void setTimeOfDay(double timeOfDay1){
+        timeOfDay = timeOfDay1;
     }
 }
