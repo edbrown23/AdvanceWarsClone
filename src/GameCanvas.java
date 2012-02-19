@@ -65,6 +65,8 @@ public class GameCanvas extends JPanel {
         for(int y = 0; y <= 400; y += 20){
             g2d.drawLine(0, y, 800, y);
         }
+
+        map.renderSelection(g2d, topLeftX, topLeftY);
     }
     
     public void addUnit(BaseUnit unit){

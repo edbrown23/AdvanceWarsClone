@@ -103,6 +103,10 @@ public class SimpleMap {
         this.renderFog(g2d, topLeftX, topLeftY);
     }
 
+    public void renderSelection(Graphics2D g2d, int topLeftX, int topLeftY){
+        QuadTree.renderSelection(g2d, topLeftX, topLeftY);
+    }
+
     public void renderFog(Graphics2D g2d, int topLeftX, int topLeftY){
         int fogScale = (int)((Math.sin(timeOfDay) + 1) * 100);
         for(int y = topLeftY; y < (topLeftY + 400); y += 20){

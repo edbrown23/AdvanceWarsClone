@@ -23,22 +23,7 @@ public abstract class BaseUnit {
     protected BaseUnit(int health, int attackPower, Facing facingDirection, int xPosition, String spritePath, int yPosition, int visionMax) {
         try {
             BufferedImage temp = ImageIO.read(new File(spritePath));
-            sprite = new BufferedImage(temp.getWidth(), temp.getHeight(), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2d = sprite.createGraphics();
-            g2d.setComposite(AlphaComposite.Src);
-            g2d.drawImage(temp, null, 0, 0);
-            g2d.dispose();
-            for(int y = 0; y < temp.getHeight(); y++){
-                for(int x = 0; x < temp.getWidth(); x++){
-                    Color tempC = new Color(temp.getRGB(x, y));
-                    int r = tempC.getRed();
-                    int g = tempC.getGreen();
-                    int b = tempC.getBlue();
-                    if(r == 255 && b == 250){
-                        sprite.setRGB(x, y, 0x00000000);
-                    }
-                }
-            }
+            sprite = SpriteTools.setTransparent(temp);
             this.health = health;
             this.attackPower = attackPower;
             this.facingDirection = facingDirection;

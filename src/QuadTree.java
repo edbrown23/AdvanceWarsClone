@@ -16,6 +16,7 @@ public class QuadTree {
     private static BufferedImage grassSprite;
     private static BufferedImage treeSprite;
     private static BufferedImage mountainSprite;
+    private static BufferedImage selectedSprite;
     private static QuadTreeNode selectedNode;
 
     /**
@@ -27,6 +28,8 @@ public class QuadTree {
             grassSprite = toCompatibleImage(ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/grassSprite.png")));
             treeSprite = toCompatibleImage(ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/treeSprite.png")));
             mountainSprite = toCompatibleImage(ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/mountainSprite.png")));
+            BufferedImage temp = SpriteTools.setTransparent(ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/selectionTool.png")));
+            selectedSprite = toCompatibleImage(temp);
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -139,9 +142,12 @@ public class QuadTree {
                 e.printStackTrace();
             }
         }
+
+    }
+
+    public static void renderSelection(Graphics2D g2d, int topLeftX, int topLeftY){
         if(selectedNode != null){
-            g2d.setColor(Color.green);
-            g2d.fillRect(selectedNode.getX() - topLeftX, selectedNode.getY() - topLeftY, 20, 20);
+            g2d.drawImage(selectedSprite, selectedNode.getX() - 2 - topLeftX, selectedNode.getY() - 2 - topLeftY, 24, 24, null);
         }
     }
 
