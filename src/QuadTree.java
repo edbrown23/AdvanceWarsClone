@@ -24,11 +24,11 @@ public class QuadTree {
      */
     public static void setupSprites(){
         try{
-            waterSprite = toCompatibleImage(ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/waterSprite.png")));
-            grassSprite = toCompatibleImage(ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/grassSprite.png")));
-            treeSprite = toCompatibleImage(ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/treeSprite.png")));
-            mountainSprite = toCompatibleImage(ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/mountainSprite.png")));
-            BufferedImage temp = SpriteTools.setTransparent(ImageIO.read(new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/selectionTool.png")));
+            waterSprite = toCompatibleImage(ImageIO.read(new File("Sprites/waterSprite.png")));
+            grassSprite = toCompatibleImage(ImageIO.read(new File("Sprites/grassSprite.png")));
+            treeSprite = toCompatibleImage(ImageIO.read(new File("Sprites/treeSprite.png")));
+            mountainSprite = toCompatibleImage(ImageIO.read(new File("Sprites/mountainSprite.png")));
+            BufferedImage temp = SpriteTools.setTransparent(ImageIO.read(new File("Sprites/selectionTool.png")));
             selectedSprite = toCompatibleImage(temp);
         }catch(IOException e){
             e.printStackTrace();

@@ -68,7 +68,7 @@ public class SimpleMap {
             }
         }
         try{
-            ImageIO.write(debugImage, "png", new File("C:/Users/Eric/Desktop/AdvanceWarsClone/Sprites/perlinNoise.png"));
+            ImageIO.write(debugImage, "png", new File("Sprites/perlinNoise.png"));
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -222,10 +222,10 @@ public class SimpleMap {
      * @return
      */
     public LinkedList<AStarNode> calculatePath(BaseUnit startUnit, AStarNode Goal){
-        AStarNode startingPoint = new AStarNode(startUnit.getxPosition(), startUnit.getyPosition(), 20);
+        AStarNode startingPoint = new AStarNode(startUnit.getxPosition() / 20, startUnit.getyPosition() / 20);
         startingPoint.G = 0;
         startingPoint.H = calculateEuclideanDistance(startingPoint, Goal);
-        startingPoint.F = startingPoint.G + startingPoint.F;
+        startingPoint.F = startingPoint.G + startingPoint.H;
         LinkedList<AStarNode> openList = new LinkedList<AStarNode>();
         LinkedList<AStarNode> closedList = new LinkedList<AStarNode>();
 
@@ -234,15 +234,15 @@ public class SimpleMap {
             AStarNode currentPoint = getListBest(openList, startingPoint, Goal);
             closedList.add(currentPoint);
             openList.remove(currentPoint);
-            if(closedList.contains(Goal) || openList.size() == 0){
+            if(closedList.contains(Goal)){
                 break;
             }else{
-                AStarNode topNeighbor = new AStarNode(currentPoint.getX(), currentPoint.getY() - currentPoint.getPointScale(), currentPoint.getPointScale());
+                AStarNode topNeighbor = new AStarNode(currentPoint.x, currentPoint.y - 1);
                 if(!openList.contains(topNeighbor) && !closedList.contains(topNeighbor)){
-                    if(referenceTiles[topNeighbor.getPointForIndex()[0]][topNeighbor.getPointForIndex()[1]] != TileTypes.Water){
-                        if(referenceTiles[topNeighbor.getPointForIndex()[0]][topNeighbor.getPointForIndex()[1]] == TileTypes.Trees){
+                    if(referenceTiles[topNeighbor.x][topNeighbor.y] != TileTypes.Water){
+                        if(referenceTiles[topNeighbor.x][topNeighbor.y] == TileTypes.Trees){
                             topNeighbor.G = currentPoint.G + 30;
-                        }else if(referenceTiles[topNeighbor.getPointForIndex()[0]][topNeighbor.getPointForIndex()[1]] == TileTypes.Mountains){
+                        }else if(referenceTiles[topNeighbor.x][topNeighbor.y] == TileTypes.Mountains){
                             topNeighbor.G = currentPoint.G + 40;
                         }else{
                             topNeighbor.G = currentPoint.G + 20;
@@ -254,9 +254,9 @@ public class SimpleMap {
                     }
                 }else if(openList.contains(topNeighbor)){
                     float tempG;
-                    if(referenceTiles[topNeighbor.getPointForIndex()[0]][topNeighbor.getPointForIndex()[1]] == TileTypes.Trees){
+                    if(referenceTiles[topNeighbor.x][topNeighbor.y] == TileTypes.Trees){
                         tempG = currentPoint.G + 30;
-                    }else if(referenceTiles[topNeighbor.getPointForIndex()[0]][topNeighbor.getPointForIndex()[1]] == TileTypes.Mountains){
+                    }else if(referenceTiles[topNeighbor.x][topNeighbor.y] == TileTypes.Mountains){
                         tempG = currentPoint.G + 40;
                     }else{
                         tempG = currentPoint.G + 20;
@@ -267,12 +267,12 @@ public class SimpleMap {
                     }
                 }
 
-                AStarNode rightNeighbor = new AStarNode(currentPoint.getX() + currentPoint.getPointScale(), currentPoint.getY(), currentPoint.getPointScale());
+                AStarNode rightNeighbor = new AStarNode(currentPoint.x + 1, currentPoint.y);
                 if(!openList.contains(rightNeighbor) && !closedList.contains(rightNeighbor)){
-                    if(referenceTiles[rightNeighbor.getPointForIndex()[0]][rightNeighbor.getPointForIndex()[1]] != TileTypes.Water){
-                        if(referenceTiles[rightNeighbor.getPointForIndex()[0]][rightNeighbor.getPointForIndex()[1]] == TileTypes.Trees){
+                    if(referenceTiles[rightNeighbor.x][rightNeighbor.y] != TileTypes.Water){
+                        if(referenceTiles[rightNeighbor.x][rightNeighbor.y] == TileTypes.Trees){
                             rightNeighbor.G = currentPoint.G + 30;
-                        }else if(referenceTiles[rightNeighbor.getPointForIndex()[0]][rightNeighbor.getPointForIndex()[1]] == TileTypes.Mountains){
+                        }else if(referenceTiles[rightNeighbor.x][rightNeighbor.y] == TileTypes.Mountains){
                             rightNeighbor.G = currentPoint.G + 40;
                         }else{
                             rightNeighbor.G = currentPoint.G + 20;
@@ -284,9 +284,9 @@ public class SimpleMap {
                     }
                 }else if(openList.contains(rightNeighbor)){
                     float tempG;
-                    if(referenceTiles[rightNeighbor.getPointForIndex()[0]][rightNeighbor.getPointForIndex()[1]] == TileTypes.Trees){
+                    if(referenceTiles[rightNeighbor.x][rightNeighbor.y] == TileTypes.Trees){
                         tempG = currentPoint.G + 30;
-                    }else if(referenceTiles[rightNeighbor.getPointForIndex()[0]][rightNeighbor.getPointForIndex()[1]] == TileTypes.Mountains){
+                    }else if(referenceTiles[rightNeighbor.x][rightNeighbor.y] == TileTypes.Mountains){
                         tempG = currentPoint.G + 40;
                     }else{
                         tempG = currentPoint.G + 20;
@@ -297,12 +297,12 @@ public class SimpleMap {
                     }
                 }
 
-                AStarNode leftNeighbor = new AStarNode(currentPoint.getX() - currentPoint.getPointScale(), currentPoint.getY(), currentPoint.getPointScale());
+                AStarNode leftNeighbor = new AStarNode(currentPoint.x - 1, currentPoint.y);
                 if(!openList.contains(leftNeighbor) && !closedList.contains(leftNeighbor)){
-                    if(referenceTiles[leftNeighbor.getPointForIndex()[0]][leftNeighbor.getPointForIndex()[1]] != TileTypes.Water){
-                        if(referenceTiles[leftNeighbor.getPointForIndex()[0]][leftNeighbor.getPointForIndex()[1]] != TileTypes.Trees){
+                    if(referenceTiles[leftNeighbor.x][leftNeighbor.y] != TileTypes.Water){
+                        if(referenceTiles[leftNeighbor.x][leftNeighbor.y] != TileTypes.Trees){
                             leftNeighbor.G = currentPoint.G + 30;
-                        }else if(referenceTiles[leftNeighbor.getPointForIndex()[0]][leftNeighbor.getPointForIndex()[1]] != TileTypes.Mountains){
+                        }else if(referenceTiles[leftNeighbor.x][leftNeighbor.y] != TileTypes.Mountains){
                             leftNeighbor.G = currentPoint.G + 40;
                         }else{
                             leftNeighbor.G = currentPoint.G + 20;
@@ -314,9 +314,9 @@ public class SimpleMap {
                     }
                 }else if(openList.contains(leftNeighbor)){
                     float tempG;
-                    if(referenceTiles[leftNeighbor.getPointForIndex()[0]][leftNeighbor.getPointForIndex()[1]] != TileTypes.Trees){
+                    if(referenceTiles[leftNeighbor.x][leftNeighbor.y] != TileTypes.Trees){
                         tempG = currentPoint.G + 30;
-                    }else if(referenceTiles[leftNeighbor.getPointForIndex()[0]][leftNeighbor.getPointForIndex()[1]] != TileTypes.Mountains){
+                    }else if(referenceTiles[leftNeighbor.x][leftNeighbor.y] != TileTypes.Mountains){
                         tempG = currentPoint.G + 40;
                     }else{
                         tempG = currentPoint.G + 20;
@@ -327,12 +327,12 @@ public class SimpleMap {
                     }
                 }
 
-                AStarNode bottomNeighbor = new AStarNode(currentPoint.getX(), currentPoint.getY() + currentPoint.getPointScale(), currentPoint.getPointScale());
+                AStarNode bottomNeighbor = new AStarNode(currentPoint.x, currentPoint.y + 1);
                 if(!openList.contains(bottomNeighbor) && !closedList.contains(bottomNeighbor)){
-                    if(referenceTiles[bottomNeighbor.getPointForIndex()[0]][bottomNeighbor.getPointForIndex()[1]] != TileTypes.Water){
-                        if(referenceTiles[bottomNeighbor.getPointForIndex()[0]][bottomNeighbor.getPointForIndex()[1]] != TileTypes.Trees){
+                    if(referenceTiles[bottomNeighbor.x][bottomNeighbor.y] != TileTypes.Water){
+                        if(referenceTiles[bottomNeighbor.x][bottomNeighbor.y] != TileTypes.Trees){
                             bottomNeighbor.G = currentPoint.G + 30;
-                        }else if(referenceTiles[bottomNeighbor.getPointForIndex()[0]][bottomNeighbor.getPointForIndex()[1]] != TileTypes.Mountains){
+                        }else if(referenceTiles[bottomNeighbor.x][bottomNeighbor.y] != TileTypes.Mountains){
                             bottomNeighbor.G = currentPoint.G + 40;
                         }else{
                             bottomNeighbor.G = currentPoint.G + 20;
@@ -344,9 +344,9 @@ public class SimpleMap {
                     }
                 }else if(openList.contains(bottomNeighbor)){
                     float tempG;
-                    if(referenceTiles[bottomNeighbor.getPointForIndex()[0]][bottomNeighbor.getPointForIndex()[1]] != TileTypes.Trees){
+                    if(referenceTiles[bottomNeighbor.x][bottomNeighbor.y] != TileTypes.Trees){
                         tempG = currentPoint.G + 30;
-                    }else if(referenceTiles[bottomNeighbor.getPointForIndex()[0]][bottomNeighbor.getPointForIndex()[1]] != TileTypes.Mountains){
+                    }else if(referenceTiles[bottomNeighbor.x][bottomNeighbor.y] != TileTypes.Mountains){
                         tempG = currentPoint.G + 40;
                     }else{
                         tempG = currentPoint.G + 20;
@@ -376,8 +376,7 @@ public class SimpleMap {
     }
 
     private AStarNode getListBest(LinkedList<AStarNode> list, AStarNode source, AStarNode dest){
-        AStarNode bestNode = new AStarNode(0, 0, 20);
-        bestNode.F = 100.0f;
+        AStarNode bestNode = list.peek();
         for(AStarNode current : list){
             if(current.F < bestNode.F){
                 bestNode = current;
@@ -393,8 +392,8 @@ public class SimpleMap {
      * @return Calculated Heuristic
      */
     private float calculateEuclideanDistance(AStarNode current, AStarNode dest){
-        float xSq = (dest.getX() - current.getX()) * (dest.getX() - current.getX());
-        float ySq = (dest.getY() - current.getY()) * (dest.getY() - current.getY());
+        float xSq = (dest.x - current.x) * (dest.x - current.x);
+        float ySq = (dest.y - current.y) * (dest.y - current.y);
 
         return (float)Math.sqrt(xSq + ySq);
     }

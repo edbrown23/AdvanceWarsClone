@@ -50,10 +50,10 @@ public class UnitMovementState extends GameState {
             }else if(unitMoving){
                 unitMoving = false;
             }else{
-                System.out.println("No unit selected!");
+                    System.out.println("No unit selected!");
+                }
             }
         }
-    }
 
     public void update(double elapsedTime){
         game.setElapsedTime(elapsedTime);
@@ -85,12 +85,12 @@ public class UnitMovementState extends GameState {
 
         // The below is probably terrible too. I should basically rethink all user input handling
         if(unitMoving){
-            AStarNode desiredPoint = new AStarNode(game.getSelectedNode().getX(), game.getSelectedNode().getY(), game.getSelectedNode().getWidth());
+            AStarNode desiredPoint = new AStarNode(game.getSelectedNode().getX() / 20, game.getSelectedNode().getY() / 20);
             game.setUnitPath(selectedUnit, desiredPoint);
             unitMoving = false;
-            System.out.println("You've selected a destination at " + desiredPoint.getX() + " " + desiredPoint.getY());
+            System.out.println("You've selected a destination at " + desiredPoint.x * 20 + " " + desiredPoint.y * 20);
         }else{
-            game.setUnitPath(selectedUnit, null);
+            //game.setUnitPath(selectedUnit, null);
         }
     }
 }

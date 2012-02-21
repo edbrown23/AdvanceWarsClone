@@ -68,7 +68,7 @@ public class GameCanvas extends JPanel {
         if(unitPath != null){
             g2d.setColor(Color.blue);
             for(AStarNode currentPoint : unitPath){
-                g2d.fillRect(currentPoint.getX() + 5, currentPoint.getY() + 5, 10, 10);
+                g2d.fillRect((currentPoint.x * 20) + 5, (currentPoint.y * 20) + 5, 10, 10);
             }
         }
         
