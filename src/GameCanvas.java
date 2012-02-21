@@ -1,8 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -15,8 +12,7 @@ import java.util.LinkedList;
 public class GameCanvas extends JPanel {
     private SimpleMap map;
     private int topLeftX, topLeftY;
-    private int selectedX, selectedY = 0;
-    private QuadTreeNode[][] roots;
+    private LinkedList<AStarNode> unitPath;
     
     public GameCanvas(String path){
         this.setSize(400, 200);
@@ -30,15 +26,20 @@ public class GameCanvas extends JPanel {
         this.setSize(400, 200);
         map.createMapFromPerlinNoise(100, 150, 200, 255);
         QuadTree.setupSprites();
-        roots = map.getMapTreeRoots();
-
-        MouseHandler mHandler = new MouseHandler();
-        this.addMouseListener(mHandler);
+        map.getMapTreeRoots();
     }
     
     public void setTopCoords(int topX, int topY){
         topLeftX = topX;
         topLeftY = topY;
+    }
+    
+    public void setUnitPath(BaseUnit startingUnit, AStarNode goal){
+        if(goal != null){
+            unitPath = map.calculatePath(startingUnit, goal);
+        }else{
+            unitPath = null;
+        }
     }
     
     public int getTopLeftX(){
@@ -54,10 +55,6 @@ public class GameCanvas extends JPanel {
         Graphics2D g2d = (Graphics2D)g;
 
         map.render(g2d, topLeftX, topLeftY);
-
-        g2d.setColor(Color.white);
-        g2d.fillRect(0, 400, 800, 400);
-        g2d.fillRect(800, 0, 400, 800);
         g2d.setColor(Color.black);
         for(int x = 0; x <= 800; x += 20){
             g2d.drawLine(x, 0, x, 400);
@@ -67,12 +64,32 @@ public class GameCanvas extends JPanel {
         }
 
         map.renderSelection(g2d, topLeftX, topLeftY);
+        
+        if(unitPath != null){
+            g2d.setColor(Color.blue);
+            for(AStarNode currentPoint : unitPath){
+                g2d.fillRect(currentPoint.getX() + 5, currentPoint.getY() + 5, 10, 10);
+            }
+        }
+        
+        g2d.setColor(Color.white);
+        g2d.fillRect(0, 400, 800, 400);
+        g2d.fillRect(800, 0, 400, 800);
     }
     
     public void addUnit(BaseUnit unit){
         map.addUnit(unit);
     }
-   
+
+    public void mouseSelect(int x, int y){
+        int selectedX = x + topLeftX;
+        int selectedY = y + topLeftY;
+
+        QuadTree.selectTile(map.getMapTreeRoots()[0][0], selectedX, selectedY);
+        QuadTree.selectTile(map.getMapTreeRoots()[1][0], selectedX, selectedY);
+        QuadTree.selectTile(map.getMapTreeRoots()[2][0], selectedX, selectedY);
+    }
+
     public QuadTreeNode getSelectedNode(){
         return QuadTree.getSelectedNode();
     }
@@ -85,37 +102,7 @@ public class GameCanvas extends JPanel {
         map.setTimeOfDay((map.getTimeOfDay() + elapsedTime / 100) % (2 * Math.PI));
     }
 
-    private class MouseHandler implements MouseListener{
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            int x = e.getX();
-            int y = e.getY();
-            selectedX = topLeftX + x;
-            selectedY = topLeftY + y;
-            QuadTree.selectTile(roots[0][0], selectedX, selectedY);
-            QuadTree.selectTile(roots[1][0], selectedX, selectedY);
-            QuadTree.selectTile(roots[2][0], selectedX, selectedY);
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            //To change body of implemented methods use File | Settings | File Templates.
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            //To change body of implemented methods use File | Settings | File Templates.
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            //To change body of implemented methods use File | Settings | File Templates.
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            //To change body of implemented methods use File | Settings | File Templates.
-        }
+    public SimpleMap getMap(){
+        return map;
     }
 }

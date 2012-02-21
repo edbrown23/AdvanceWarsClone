@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,7 +33,10 @@ public class BasicGUI extends JFrame {
         this.add(gameMachine.getCurrentState().getGUIComponent(), BorderLayout.CENTER);
         this.setSize(901, 501);
 
-        double MAXFPS = 1000000000 / 60.0f; // should stand for 30 frames per second
+        MouseHandler mHandler = new MouseHandler();
+        gameMachine.getCurrentState().getGUIComponent().addMouseListener(mHandler);
+
+        double MAXFPS = 1000000000 / 30.0f; // should stand for 30 frames per second
 
         double currentTime = 0.0, elapsedTime = 0.0;
 
@@ -75,6 +80,34 @@ public class BasicGUI extends JFrame {
 
         @Override
         public void keyReleased(KeyEvent e) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+    }
+
+    private class MouseHandler implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            gameMachine.getCurrentState().setMouseState(e);
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
             //To change body of implemented methods use File | Settings | File Templates.
         }
     }

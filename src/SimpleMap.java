@@ -1,11 +1,8 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -209,12 +206,196 @@ public class SimpleMap {
     public QuadTreeNode[][] getMapTreeRoots(){
         return mapTreeRoots;
     }
-    
+
     public double getTimeOfDay(){
         return timeOfDay;
     }
-    
+
     public void setTimeOfDay(double timeOfDay1){
         timeOfDay = timeOfDay1;
+    }
+
+    /**
+     * Rework for different kinds of units! And to avoid collisions!
+     * @param startUnit
+     * @param Goal
+     * @return
+     */
+    public LinkedList<AStarNode> calculatePath(BaseUnit startUnit, AStarNode Goal){
+        AStarNode startingPoint = new AStarNode(startUnit.getxPosition(), startUnit.getyPosition(), 20);
+        startingPoint.G = 0;
+        startingPoint.H = calculateEuclideanDistance(startingPoint, Goal);
+        startingPoint.F = startingPoint.G + startingPoint.F;
+        LinkedList<AStarNode> openList = new LinkedList<AStarNode>();
+        LinkedList<AStarNode> closedList = new LinkedList<AStarNode>();
+
+        openList.add(startingPoint);
+        while(true){
+            AStarNode currentPoint = getListBest(openList, startingPoint, Goal);
+            closedList.add(currentPoint);
+            openList.remove(currentPoint);
+            if(closedList.contains(Goal) || openList.size() == 0){
+                break;
+            }else{
+                AStarNode topNeighbor = new AStarNode(currentPoint.getX(), currentPoint.getY() - currentPoint.getPointScale(), currentPoint.getPointScale());
+                if(!openList.contains(topNeighbor) && !closedList.contains(topNeighbor)){
+                    if(referenceTiles[topNeighbor.getPointForIndex()[0]][topNeighbor.getPointForIndex()[1]] != TileTypes.Water){
+                        if(referenceTiles[topNeighbor.getPointForIndex()[0]][topNeighbor.getPointForIndex()[1]] == TileTypes.Trees){
+                            topNeighbor.G = currentPoint.G + 30;
+                        }else if(referenceTiles[topNeighbor.getPointForIndex()[0]][topNeighbor.getPointForIndex()[1]] == TileTypes.Mountains){
+                            topNeighbor.G = currentPoint.G + 40;
+                        }else{
+                            topNeighbor.G = currentPoint.G + 20;
+                        }
+                        topNeighbor.H = calculateEuclideanDistance(topNeighbor, Goal);
+                        topNeighbor.F = topNeighbor.G + topNeighbor.H;
+                        topNeighbor.parent = currentPoint;
+                        openList.add(topNeighbor);
+                    }
+                }else if(openList.contains(topNeighbor)){
+                    float tempG;
+                    if(referenceTiles[topNeighbor.getPointForIndex()[0]][topNeighbor.getPointForIndex()[1]] == TileTypes.Trees){
+                        tempG = currentPoint.G + 30;
+                    }else if(referenceTiles[topNeighbor.getPointForIndex()[0]][topNeighbor.getPointForIndex()[1]] == TileTypes.Mountains){
+                        tempG = currentPoint.G + 40;
+                    }else{
+                        tempG = currentPoint.G + 20;
+                    }
+                    if(tempG < topNeighbor.G){
+                        topNeighbor.G = tempG;
+                        topNeighbor.parent = currentPoint;
+                    }
+                }
+
+                AStarNode rightNeighbor = new AStarNode(currentPoint.getX() + currentPoint.getPointScale(), currentPoint.getY(), currentPoint.getPointScale());
+                if(!openList.contains(rightNeighbor) && !closedList.contains(rightNeighbor)){
+                    if(referenceTiles[rightNeighbor.getPointForIndex()[0]][rightNeighbor.getPointForIndex()[1]] != TileTypes.Water){
+                        if(referenceTiles[rightNeighbor.getPointForIndex()[0]][rightNeighbor.getPointForIndex()[1]] == TileTypes.Trees){
+                            rightNeighbor.G = currentPoint.G + 30;
+                        }else if(referenceTiles[rightNeighbor.getPointForIndex()[0]][rightNeighbor.getPointForIndex()[1]] == TileTypes.Mountains){
+                            rightNeighbor.G = currentPoint.G + 40;
+                        }else{
+                            rightNeighbor.G = currentPoint.G + 20;
+                        }
+                        rightNeighbor.H = calculateEuclideanDistance(rightNeighbor, Goal);
+                        rightNeighbor.F = rightNeighbor.G + rightNeighbor.H;
+                        rightNeighbor.parent = currentPoint;
+                        openList.add(rightNeighbor);
+                    }
+                }else if(openList.contains(rightNeighbor)){
+                    float tempG;
+                    if(referenceTiles[rightNeighbor.getPointForIndex()[0]][rightNeighbor.getPointForIndex()[1]] == TileTypes.Trees){
+                        tempG = currentPoint.G + 30;
+                    }else if(referenceTiles[rightNeighbor.getPointForIndex()[0]][rightNeighbor.getPointForIndex()[1]] == TileTypes.Mountains){
+                        tempG = currentPoint.G + 40;
+                    }else{
+                        tempG = currentPoint.G + 20;
+                    }
+                    if(tempG < rightNeighbor.G){
+                        rightNeighbor.G = tempG;
+                        rightNeighbor.parent = currentPoint;
+                    }
+                }
+
+                AStarNode leftNeighbor = new AStarNode(currentPoint.getX() - currentPoint.getPointScale(), currentPoint.getY(), currentPoint.getPointScale());
+                if(!openList.contains(leftNeighbor) && !closedList.contains(leftNeighbor)){
+                    if(referenceTiles[leftNeighbor.getPointForIndex()[0]][leftNeighbor.getPointForIndex()[1]] != TileTypes.Water){
+                        if(referenceTiles[leftNeighbor.getPointForIndex()[0]][leftNeighbor.getPointForIndex()[1]] != TileTypes.Trees){
+                            leftNeighbor.G = currentPoint.G + 30;
+                        }else if(referenceTiles[leftNeighbor.getPointForIndex()[0]][leftNeighbor.getPointForIndex()[1]] != TileTypes.Mountains){
+                            leftNeighbor.G = currentPoint.G + 40;
+                        }else{
+                            leftNeighbor.G = currentPoint.G + 20;
+                        }
+                        leftNeighbor.H = calculateEuclideanDistance(leftNeighbor, Goal);
+                        leftNeighbor.F = leftNeighbor.G + leftNeighbor.H;
+                        leftNeighbor.parent = currentPoint;
+                        openList.add(leftNeighbor);
+                    }
+                }else if(openList.contains(leftNeighbor)){
+                    float tempG;
+                    if(referenceTiles[leftNeighbor.getPointForIndex()[0]][leftNeighbor.getPointForIndex()[1]] != TileTypes.Trees){
+                        tempG = currentPoint.G + 30;
+                    }else if(referenceTiles[leftNeighbor.getPointForIndex()[0]][leftNeighbor.getPointForIndex()[1]] != TileTypes.Mountains){
+                        tempG = currentPoint.G + 40;
+                    }else{
+                        tempG = currentPoint.G + 20;
+                    }
+                    if(tempG < leftNeighbor.G){
+                        leftNeighbor.G = tempG;
+                        leftNeighbor.parent = currentPoint;
+                    }
+                }
+
+                AStarNode bottomNeighbor = new AStarNode(currentPoint.getX(), currentPoint.getY() + currentPoint.getPointScale(), currentPoint.getPointScale());
+                if(!openList.contains(bottomNeighbor) && !closedList.contains(bottomNeighbor)){
+                    if(referenceTiles[bottomNeighbor.getPointForIndex()[0]][bottomNeighbor.getPointForIndex()[1]] != TileTypes.Water){
+                        if(referenceTiles[bottomNeighbor.getPointForIndex()[0]][bottomNeighbor.getPointForIndex()[1]] != TileTypes.Trees){
+                            bottomNeighbor.G = currentPoint.G + 30;
+                        }else if(referenceTiles[bottomNeighbor.getPointForIndex()[0]][bottomNeighbor.getPointForIndex()[1]] != TileTypes.Mountains){
+                            bottomNeighbor.G = currentPoint.G + 40;
+                        }else{
+                            bottomNeighbor.G = currentPoint.G + 20;
+                        }
+                        bottomNeighbor.H = calculateEuclideanDistance(bottomNeighbor, Goal);
+                        bottomNeighbor.F = bottomNeighbor.G + bottomNeighbor.H;
+                        bottomNeighbor.parent = currentPoint;
+                        openList.add(bottomNeighbor);
+                    }
+                }else if(openList.contains(bottomNeighbor)){
+                    float tempG;
+                    if(referenceTiles[bottomNeighbor.getPointForIndex()[0]][bottomNeighbor.getPointForIndex()[1]] != TileTypes.Trees){
+                        tempG = currentPoint.G + 30;
+                    }else if(referenceTiles[bottomNeighbor.getPointForIndex()[0]][bottomNeighbor.getPointForIndex()[1]] != TileTypes.Mountains){
+                        tempG = currentPoint.G + 40;
+                    }else{
+                        tempG = currentPoint.G + 20;
+                    }
+                    if(tempG < bottomNeighbor.G){
+                        bottomNeighbor.G = tempG;
+                        bottomNeighbor.parent = currentPoint;
+                    }
+                }
+            }
+        }
+        if(closedList.contains(Goal)){
+            LinkedList<AStarNode> finalPath = new LinkedList<AStarNode>();
+            AStarNode current = Goal;
+            while(current != startingPoint){
+                finalPath.add(current);
+                if(current.parent == null){
+                    break;
+                }else{
+                    current = current.parent;
+                }
+            }
+            return finalPath;
+        }else{
+            return null;
+        }
+    }
+
+    private AStarNode getListBest(LinkedList<AStarNode> list, AStarNode source, AStarNode dest){
+        AStarNode bestNode = new AStarNode(0, 0, 20);
+        bestNode.F = 100.0f;
+        for(AStarNode current : list){
+            if(current.F < bestNode.F){
+                bestNode = current;
+            }
+        }
+        return bestNode;
+    }
+
+    /**
+     * My heuristic function, which should produce more natural movement
+     * @param current current node
+     * @param dest destination node
+     * @return Calculated Heuristic
+     */
+    private float calculateEuclideanDistance(AStarNode current, AStarNode dest){
+        float xSq = (dest.getX() - current.getX()) * (dest.getX() - current.getX());
+        float ySq = (dest.getY() - current.getY()) * (dest.getY() - current.getY());
+
+        return (float)Math.sqrt(xSq + ySq);
     }
 }

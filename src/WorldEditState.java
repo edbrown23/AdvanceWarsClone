@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 /**
  * Created by IntelliJ IDEA.
@@ -51,12 +52,16 @@ public class WorldEditState extends GameState {
             }
     }
 
+    public void setMouseState(MouseEvent e){
+        game.mouseSelect(e.getX(), e.getY());
+    }
+
     public void update(double elapsedTime){
         game.setElapsedTime(elapsedTime);
     }
 
     public void render(){
-        System.out.println("Edit State!");
+        //System.out.println("Edit State!");
         game.setTopCoords(topLeftX, topLeftY);
         game.repaint();
     }
@@ -75,5 +80,13 @@ public class WorldEditState extends GameState {
     
     public int getTopLeftY(){
         return topLeftY;
+    }
+    
+    public int getWidth(){
+        return  width;
+    }
+    
+    public int getHeight(){
+        return height;
     }
 }

@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,6 +30,8 @@ public abstract class GameState {
 
     public void setKeyboardState(KeyEvent keyEvent){}
 
+    public void setMouseState(MouseEvent e){}
+    
     public void render(){}
     
     public Component getGUIComponent(){

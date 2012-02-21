@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,6 +13,8 @@ public class UnitMovementState extends GameState {
     private GameCanvas game;
     private int topLeftX = 0, topLeftY = 0;
     private int width, height;
+    private BaseUnit selectedUnit;
+    private boolean unitMoving = false;
 
     public UnitMovementState(int t, GameState previousState) {
         super(t);
@@ -19,9 +22,8 @@ public class UnitMovementState extends GameState {
         // Essentially transferring everything from the edit state to this state
         WorldEditState prev = (WorldEditState)previousState;
         game = prev.getGame();
-        topLeftX = prev.getTopLeftX();
-        topLeftY = prev.getTopLeftY();
-        
+        width = prev.getWidth();
+        height = prev.getHeight();
     }
 
     public void setKeyboardState(KeyEvent e){
@@ -41,6 +43,15 @@ public class UnitMovementState extends GameState {
             if(topLeftY < (height * 20) - 400){
                 topLeftY += 20;
             }
+        }else if(e.getKeyCode() == KeyEvent.VK_M){
+            if(selectedUnit != null){
+                System.out.println("Please click on a destination!");
+                unitMoving = true;
+            }else if(unitMoving){
+                unitMoving = false;
+            }else{
+                System.out.println("No unit selected!");
+            }
         }
     }
 
@@ -49,12 +60,37 @@ public class UnitMovementState extends GameState {
     }
 
     public void render(){
-        System.out.println("Unit State");
+        //System.out.println("Unit State");
         game.setTopCoords(topLeftX, topLeftY);
         game.repaint();
     }
 
     public Component getGUIComponent(){
         return game;
+    }
+
+    public void setMouseState(MouseEvent e){
+        game.mouseSelect(e.getX(), e.getY());
+        // This is a terribly bad no fun way of doing this, which will crap on everything in large groups of units. FIX!
+        if(!unitMoving){
+            for(BaseUnit currentUnit : game.getMap().getUnits()){
+                if(currentUnit.getxPosition() == game.getSelectedNode().getX() && currentUnit.getyPosition() == game.getSelectedNode().getY()){
+                    selectedUnit = currentUnit;
+                    System.out.println("You've selected a unit at " + selectedUnit.getxPosition() + " " + selectedUnit.getyPosition());
+                }else{
+                    selectedUnit = null;
+                }
+            }
+        }
+
+        // The below is probably terrible too. I should basically rethink all user input handling
+        if(unitMoving){
+            AStarNode desiredPoint = new AStarNode(game.getSelectedNode().getX(), game.getSelectedNode().getY(), game.getSelectedNode().getWidth());
+            game.setUnitPath(selectedUnit, desiredPoint);
+            unitMoving = false;
+            System.out.println("You've selected a destination at " + desiredPoint.getX() + " " + desiredPoint.getY());
+        }else{
+            game.setUnitPath(selectedUnit, null);
+        }
     }
 }
