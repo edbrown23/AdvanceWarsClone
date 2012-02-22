@@ -90,7 +90,7 @@ public class UnitMovementState extends GameState {
             unitMoving = false;
             System.out.println("You've selected a destination at " + desiredPoint.x * 20 + " " + desiredPoint.y * 20);
         }else{
-            //game.setUnitPath(selectedUnit, null);
+            game.setUnitPath(selectedUnit, null);
         }
     }
 }

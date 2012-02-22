@@ -37,6 +37,7 @@ public class GameCanvas extends JPanel {
     public void setUnitPath(BaseUnit startingUnit, AStarNode goal){
         if(goal != null){
             unitPath = map.calculatePath(startingUnit, goal);
+            map.informUnitOfNewPath(startingUnit, unitPath);
         }else{
             unitPath = null;
         }
@@ -68,7 +69,7 @@ public class GameCanvas extends JPanel {
         if(unitPath != null){
             g2d.setColor(Color.blue);
             for(AStarNode currentPoint : unitPath){
-                g2d.fillRect((currentPoint.x * 20) + 5, (currentPoint.y * 20) + 5, 10, 10);
+                g2d.fillRect((currentPoint.x * 20) + 5 - topLeftX, (currentPoint.y * 20) + 5 - topLeftY, 10, 10);
             }
         }
         
@@ -99,6 +100,7 @@ public class GameCanvas extends JPanel {
     }
 
     public void setElapsedTime(double elapsedTime){
+        map.updateUnitFrames(elapsedTime);
         map.setTimeOfDay((map.getTimeOfDay() + elapsedTime / 100) % (2 * Math.PI));
     }
 

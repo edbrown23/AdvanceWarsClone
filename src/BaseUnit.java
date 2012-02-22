@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,6 +20,7 @@ public abstract class BaseUnit {
     protected BufferedImage sprite;
     protected int xPosition;
     protected int yPosition;
+    protected LinkedList<AStarNode> movementPath;
 
     protected BaseUnit(int health, int attackPower, Facing facingDirection, int xPosition, String spritePath, int yPosition, int visionMax) {
         try {
@@ -93,5 +95,13 @@ public abstract class BaseUnit {
 
     public void setVisionMax(int visionMax) {
         this.visionMax = visionMax;
+    }
+
+    public void setMovementPath(LinkedList<AStarNode> path){
+        this.movementPath = path;
+    }
+
+    public LinkedList<AStarNode> getMovementPath(){
+        return movementPath;
     }
 }
