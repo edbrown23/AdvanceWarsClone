@@ -49,6 +49,8 @@ public class WorldEditState extends GameState {
             game.changeCell(TileTypes.Trees);
         }else if(e.getKeyCode() == KeyEvent.VK_B){
             game.addUnit(new Infantry(10, 10, Facing.East, game.getSelectedNode().getX(), "Sprites/Infantry.png", game.getSelectedNode().getY(), 5, "Infantry"));
+        }else if(e.getKeyCode() == KeyEvent.VK_F){
+            game.addUnit(new JetFighter(10, 20, Facing.East, game.getSelectedNode().getX(), "Sprites/JetFighter.png", game.getSelectedNode().getY(), 8, "Jet Fighter"));
         }
     }
 

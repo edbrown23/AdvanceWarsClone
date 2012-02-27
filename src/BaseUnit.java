@@ -1,8 +1,10 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.LinkedList;
 
 /**
@@ -23,6 +25,8 @@ public abstract class BaseUnit {
     protected int yPosition;
     protected LinkedList<AStarNode> movementPath;
     protected String name;
+    protected LinkedList<TileTypes> restrictedTiles = new LinkedList<TileTypes>();
+    protected Hashtable<TileTypes, Integer> movementCosts = new Hashtable<TileTypes, Integer>();
 
     protected BaseUnit(int health, int attackPower, Facing facingDirection, int xPosition, String spritePath, int yPosition, int visionMax, String name) {
         try {
@@ -42,7 +46,28 @@ public abstract class BaseUnit {
     }
     
     public void render(Graphics2D g2d, int topLeftX, int topLeftY){
+        float rotationAngle = 0.0f;
+        switch(facingDirection){
+            case East:
+                rotationAngle = 0.0f;
+                break;
+            case West:
+                rotationAngle = (float)Math.PI;
+                break;
+            case North:
+                rotationAngle = (float)((3 * Math.PI) / 2);
+                break;
+            case South:
+                rotationAngle = (float)((Math.PI) / 2);
+                break;
+        }
+        AffineTransform oldTransform = g2d.getTransform();
+        g2d.translate(xPosition + 10, yPosition + 10);
+        g2d.rotate(rotationAngle);
+        g2d.translate(-1 * (xPosition + 10), -1 * (yPosition + 10));
         g2d.drawImage(sprite, xPosition - topLeftX, yPosition - topLeftY, 20, 20, null);
+
+        g2d.setTransform(oldTransform);
     }
 
     public int getAttackPower() {

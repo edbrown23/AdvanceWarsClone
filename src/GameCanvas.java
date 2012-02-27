@@ -15,7 +15,7 @@ public class GameCanvas extends JPanel {
     private int topLeftX, topLeftY;
     private LinkedList<AStarNode> unitPath;
     private GameState currentState;
-    
+
     public GameCanvas(int width, int height){
         map = new SimpleMap(width, height);
         this.setSize(500, 250);
@@ -27,30 +27,34 @@ public class GameCanvas extends JPanel {
         this.add(menu);
         menu.setLocation(0,500);
     }
-    
+
     public void setTopCoords(int topX, int topY){
         topLeftX = topX;
         topLeftY = topY;
         menu.setTopLeft(topLeftX / 20, topLeftY / 20);
     }
-    
+
     public void setUnitPath(BaseUnit startingUnit, AStarNode goal){
         if(goal != null){
             unitPath = map.calculatePath(startingUnit, goal);
-            map.informUnitOfNewPath(startingUnit, unitPath);
+            if(unitPath != null){
+                map.informUnitOfNewPath(startingUnit, unitPath);
+            }else{
+                System.out.println("No path to destination!");
+            }
         }else{
             unitPath = null;
         }
     }
-    
+
     public int getTopLeftX(){
         return topLeftX;
     }
-    
+
     public int getTopLeftY(){
         return topLeftY;
     }
-    
+
     @Override
     public void paintComponent(Graphics g){
         Graphics2D g2d = (Graphics2D)g;
@@ -65,7 +69,7 @@ public class GameCanvas extends JPanel {
         }
 
         map.renderSelection(g2d, topLeftX, topLeftY);
-        
+
         if(unitPath != null){
             g2d.setColor(Color.blue);
             for(AStarNode currentPoint : unitPath){
@@ -77,7 +81,7 @@ public class GameCanvas extends JPanel {
         // is this evil? I don't know, stack overflow says it is
         menu.repaint();
     }
-    
+
     public void addUnit(BaseUnit unit){
         map.addUnit(unit);
     }
@@ -113,7 +117,7 @@ public class GameCanvas extends JPanel {
         this.currentState = currentState;
         menu.setCurrentState(currentState);
     }
-    
+
     public void setSelectedUnit(BaseUnit selectedUnit){
         menu.setSelectedUnit(selectedUnit);
     }

@@ -44,16 +44,15 @@ public class UnitMovementState extends GameState {
                 topLeftY += 20;
             }
         }else if(e.getKeyCode() == KeyEvent.VK_M){
+            //System.out.println(selectedUnit.getName());
             if(selectedUnit != null){
                 System.out.println("Please click on a destination!");
                 unitMoving = true;
-            }else if(unitMoving){
-                unitMoving = false;
             }else{
-                    System.out.println("No unit selected!");
-                }
+                System.out.println("No unit selected!");
             }
         }
+    }
 
     public void update(double elapsedTime){
         game.setElapsedTime(elapsedTime);
@@ -78,6 +77,7 @@ public class UnitMovementState extends GameState {
                 if(currentUnit.getxPosition() == game.getSelectedNode().getX() && currentUnit.getyPosition() == game.getSelectedNode().getY()){
                     selectedUnit = currentUnit;
                     game.setSelectedUnit(selectedUnit);
+                    break;
                 }else{
                     selectedUnit = null;
                 }

@@ -203,6 +203,15 @@ public class SimpleMap {
                 elapsedFrameTime = 0.0;
                 if(movingUnit.getMovementPath().size() > 0){
                     AStarNode node = movingUnit.getMovementPath().removeLast();
+                    if((node.y * 20) < movingUnit.getyPosition()){
+                        movingUnit.setFacingDirection(Facing.North);
+                    }else if((node.y * 20) > movingUnit.getyPosition()){
+                        movingUnit.setFacingDirection(Facing.South);
+                    }else if((node.x * 20) < movingUnit.getxPosition()){
+                        movingUnit.setFacingDirection(Facing.West);
+                    }else if((node.x * 20) > movingUnit.getxPosition()){
+                        movingUnit.setFacingDirection(Facing.East);
+                    }
                     movingUnit.setxPosition(node.x * 20);
                     movingUnit.setyPosition(node.y * 20);
                 }else{
@@ -223,7 +232,8 @@ public class SimpleMap {
     }
 
     /**
-     * Rework for different kinds of units! And to avoid collisions!
+     * Rework for different kinds of units! And to avoid collisions! This of course is not at all optimized for the quad tree,
+     * which was half the point of creating it in the first place. Redoing it should be considered strongly
      * @param startUnit
      * @param Goal
      * @return
@@ -235,26 +245,23 @@ public class SimpleMap {
         startingPoint.F = startingPoint.G + startingPoint.H;
         LinkedList<AStarNode> openList = new LinkedList<AStarNode>();
         LinkedList<AStarNode> closedList = new LinkedList<AStarNode>();
+        AStarNode topNeighbor, bottomNeighbor, leftNeighbor, rightNeighbor;
 
         openList.add(startingPoint);
         while(true){
             AStarNode currentPoint = getListBest(openList, startingPoint, Goal);
             closedList.add(currentPoint);
-            openList.remove(currentPoint);
             if(closedList.contains(Goal)){
                 break;
+            }else if(!closedList.contains(Goal) && openList.size() == 0){
+                return null;
             }else{
-                AStarNode topNeighbor = new AStarNode(currentPoint.x, currentPoint.y - 1);
+                openList.remove(currentPoint);
+                topNeighbor = new AStarNode(currentPoint.x, currentPoint.y - 1);
                 if(!openList.contains(topNeighbor) && !closedList.contains(topNeighbor)){
                     if(topNeighbor.x >= 0 && topNeighbor.x < this.mapWidth && topNeighbor.y >= 0 && topNeighbor.y < this.mapHeight){
-                        if(referenceTiles[topNeighbor.x][topNeighbor.y] != TileTypes.Water){
-                            if(referenceTiles[topNeighbor.x][topNeighbor.y] == TileTypes.Trees){
-                                topNeighbor.G = currentPoint.G + 50;
-                            }else if(referenceTiles[topNeighbor.x][topNeighbor.y] == TileTypes.Mountains){
-                                topNeighbor.G = currentPoint.G + 80;
-                            }else{
-                                topNeighbor.G = currentPoint.G + 20;
-                            }
+                        if(!startUnit.restrictedTiles.contains(referenceTiles[topNeighbor.x][topNeighbor.y])){
+                            topNeighbor.G = currentPoint.G + startUnit.movementCosts.get(referenceTiles[topNeighbor.x][topNeighbor.y]);
                             topNeighbor.H = calculateEuclideanDistance(topNeighbor, Goal);
                             topNeighbor.F = topNeighbor.G + topNeighbor.H;
                             topNeighbor.parent = currentPoint;
@@ -262,31 +269,18 @@ public class SimpleMap {
                         }
                     }
                 }else if(openList.contains(topNeighbor)){
-                    float tempG;
-                    if(referenceTiles[topNeighbor.x][topNeighbor.y] == TileTypes.Trees){
-                        tempG = currentPoint.G + 50;
-                    }else if(referenceTiles[topNeighbor.x][topNeighbor.y] == TileTypes.Mountains){
-                        tempG = currentPoint.G + 80;
-                    }else{
-                        tempG = currentPoint.G + 20;
-                    }
+                    float tempG = startUnit.movementCosts.get(referenceTiles[topNeighbor.x][topNeighbor.y]);
                     if(tempG < topNeighbor.G){
                         topNeighbor.G = tempG;
                         topNeighbor.parent = currentPoint;
                     }
                 }
 
-                AStarNode rightNeighbor = new AStarNode(currentPoint.x + 1, currentPoint.y);
+                rightNeighbor = new AStarNode(currentPoint.x + 1, currentPoint.y);
                 if(!openList.contains(rightNeighbor) && !closedList.contains(rightNeighbor)){
                     if(rightNeighbor.x >= 0 && rightNeighbor.x < this.mapWidth && rightNeighbor.y >= 0 && rightNeighbor.y < this.mapHeight){
-                        if(referenceTiles[rightNeighbor.x][rightNeighbor.y] != TileTypes.Water){
-                            if(referenceTiles[rightNeighbor.x][rightNeighbor.y] == TileTypes.Trees){
-                                rightNeighbor.G = currentPoint.G + 50;
-                            }else if(referenceTiles[rightNeighbor.x][rightNeighbor.y] == TileTypes.Mountains){
-                                rightNeighbor.G = currentPoint.G + 80;
-                            }else{
-                                rightNeighbor.G = currentPoint.G + 20;
-                            }
+                        if(!startUnit.restrictedTiles.contains(referenceTiles[rightNeighbor.x][rightNeighbor.y])){
+                            rightNeighbor.G = currentPoint.G + startUnit.movementCosts.get(referenceTiles[rightNeighbor.x][rightNeighbor.y]);
                             rightNeighbor.H = calculateEuclideanDistance(rightNeighbor, Goal);
                             rightNeighbor.F = rightNeighbor.G + rightNeighbor.H;
                             rightNeighbor.parent = currentPoint;
@@ -294,31 +288,18 @@ public class SimpleMap {
                         }
                     }
                 }else if(openList.contains(rightNeighbor)){
-                    float tempG;
-                    if(referenceTiles[rightNeighbor.x][rightNeighbor.y] == TileTypes.Trees){
-                        tempG = currentPoint.G + 50;
-                    }else if(referenceTiles[rightNeighbor.x][rightNeighbor.y] == TileTypes.Mountains){
-                        tempG = currentPoint.G + 80;
-                    }else{
-                        tempG = currentPoint.G + 20;
-                    }
+                    float tempG = currentPoint.G + startUnit.movementCosts.get(referenceTiles[rightNeighbor.x][rightNeighbor.y]);
                     if(tempG < rightNeighbor.G){
                         rightNeighbor.G = tempG;
                         rightNeighbor.parent = currentPoint;
                     }
                 }
 
-                AStarNode leftNeighbor = new AStarNode(currentPoint.x - 1, currentPoint.y);
+                leftNeighbor = new AStarNode(currentPoint.x - 1, currentPoint.y);
                 if(!openList.contains(leftNeighbor) && !closedList.contains(leftNeighbor)){
                     if(leftNeighbor.x >= 0 && leftNeighbor.x < this.mapWidth && leftNeighbor.y >= 0 && leftNeighbor.y < this.mapHeight){
-                        if(referenceTiles[leftNeighbor.x][leftNeighbor.y] != TileTypes.Water){
-                            if(referenceTiles[leftNeighbor.x][leftNeighbor.y] != TileTypes.Trees){
-                                leftNeighbor.G = currentPoint.G + 50;
-                            }else if(referenceTiles[leftNeighbor.x][leftNeighbor.y] != TileTypes.Mountains){
-                                leftNeighbor.G = currentPoint.G + 80;
-                            }else{
-                                leftNeighbor.G = currentPoint.G + 20;
-                            }
+                        if(!startUnit.restrictedTiles.contains(referenceTiles[leftNeighbor.x][leftNeighbor.y])){
+                            leftNeighbor.G = currentPoint.G + startUnit.movementCosts.get((referenceTiles[leftNeighbor.x][leftNeighbor.y]));
                             leftNeighbor.H = calculateEuclideanDistance(leftNeighbor, Goal);
                             leftNeighbor.F = leftNeighbor.G + leftNeighbor.H;
                             leftNeighbor.parent = currentPoint;
@@ -326,31 +307,18 @@ public class SimpleMap {
                         }
                     }
                 }else if(openList.contains(leftNeighbor)){
-                    float tempG;
-                    if(referenceTiles[leftNeighbor.x][leftNeighbor.y] != TileTypes.Trees){
-                        tempG = currentPoint.G + 50;
-                    }else if(referenceTiles[leftNeighbor.x][leftNeighbor.y] != TileTypes.Mountains){
-                        tempG = currentPoint.G + 80;
-                    }else{
-                        tempG = currentPoint.G + 20;
-                    }
+                    float tempG = currentPoint.G + startUnit.movementCosts.get((referenceTiles[leftNeighbor.x][leftNeighbor.y]));
                     if(tempG < leftNeighbor.G){
                         leftNeighbor.G = tempG;
                         leftNeighbor.parent = currentPoint;
                     }
                 }
 
-                AStarNode bottomNeighbor = new AStarNode(currentPoint.x, currentPoint.y + 1);
+                bottomNeighbor = new AStarNode(currentPoint.x, currentPoint.y + 1);
                 if(!openList.contains(bottomNeighbor) && !closedList.contains(bottomNeighbor)){
                     if(bottomNeighbor.x >= 0 && bottomNeighbor.x < this.mapWidth && bottomNeighbor.y >= 0 && bottomNeighbor.y < this.mapHeight){
-                        if(referenceTiles[bottomNeighbor.x][bottomNeighbor.y] != TileTypes.Water){
-                            if(referenceTiles[bottomNeighbor.x][bottomNeighbor.y] != TileTypes.Trees){
-                                bottomNeighbor.G = currentPoint.G + 50;
-                            }else if(referenceTiles[bottomNeighbor.x][bottomNeighbor.y] != TileTypes.Mountains){
-                                bottomNeighbor.G = currentPoint.G + 80;
-                            }else{
-                                bottomNeighbor.G = currentPoint.G + 20;
-                            }
+                        if(!startUnit.restrictedTiles.contains(referenceTiles[bottomNeighbor.x][bottomNeighbor.y])){
+                            bottomNeighbor.G = currentPoint.G + startUnit.movementCosts.get(referenceTiles[bottomNeighbor.x][bottomNeighbor.y]);
                             bottomNeighbor.H = calculateEuclideanDistance(bottomNeighbor, Goal);
                             bottomNeighbor.F = bottomNeighbor.G + bottomNeighbor.H;
                             bottomNeighbor.parent = currentPoint;
@@ -358,14 +326,7 @@ public class SimpleMap {
                         }
                     }
                 }else if(openList.contains(bottomNeighbor)){
-                    float tempG;
-                    if(referenceTiles[bottomNeighbor.x][bottomNeighbor.y] != TileTypes.Trees){
-                        tempG = currentPoint.G + 50;
-                    }else if(referenceTiles[bottomNeighbor.x][bottomNeighbor.y] != TileTypes.Mountains){
-                        tempG = currentPoint.G + 80;
-                    }else{
-                        tempG = currentPoint.G + 20;
-                    }
+                    float tempG = currentPoint.G + startUnit.movementCosts.get(referenceTiles[bottomNeighbor.x][bottomNeighbor.y]);
                     if(tempG < bottomNeighbor.G){
                         bottomNeighbor.G = tempG;
                         bottomNeighbor.parent = currentPoint;

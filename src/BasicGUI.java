@@ -31,7 +31,7 @@ public class BasicGUI extends JFrame {
         gameMachine.rotateState();
         this.add(gameMachine.getCurrentState().getGUIComponent(), BorderLayout.CENTER);
         this.setResizable(false);
-        this.setLocation(150, 150);
+        this.setLocation(100, 100);
         this.setVisible(true);
 
         MouseHandler mHandler = new MouseHandler();
@@ -47,7 +47,7 @@ public class BasicGUI extends JFrame {
             gameMachine.updateCurrentState(elapsedTime / 1000000); // change nanoseconds to milliseconds
             gameMachine.renderCurrentState();
             elapsedTime = System.nanoTime() - currentTime;
-
+            //System.out.println(elapsedTime / 1000000);
             // If it took less than the fps to render and update, sleep for the rest of the time
             if(elapsedTime < MAXFPS){
                 int milliElapsedTime = (int)((MAXFPS - elapsedTime) / 1000000);
