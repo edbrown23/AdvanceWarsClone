@@ -62,9 +62,11 @@ public abstract class BaseUnit {
                 break;
         }
         AffineTransform oldTransform = g2d.getTransform();
-        g2d.translate(xPosition + 10, yPosition + 10);
-        g2d.rotate(rotationAngle);
-        g2d.translate(-1 * (xPosition + 10), -1 * (yPosition + 10));
+        AffineTransform newTransform = sprite.createGraphics().getTransform();
+        newTransform.translate(xPosition + 10, yPosition + 10);
+        newTransform.rotate(rotationAngle);
+        newTransform.translate(-1 * (xPosition + 10), -1 * (yPosition + 10));
+        g2d.transform(newTransform);
         g2d.drawImage(sprite, xPosition - topLeftX, yPosition - topLeftY, 20, 20, null);
 
         g2d.setTransform(oldTransform);
