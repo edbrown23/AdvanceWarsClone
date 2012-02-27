@@ -56,7 +56,7 @@ public class SelectedTileInfoMenu extends JPanel {
                         g2d.drawString("Mountains", 100, 50);
                         break;
                     case Trees:
-                        g2d.drawImage(QuadTree.treeSprite[0], 15, 15, 70, 70, null);
+                        g2d.drawImage(QuadTree.treeSpriteTable.get(20), 15, 15, 70, 70, null);
                         g2d.setColor(Color.black);
                         g2d.drawString("Trees", 100, 50);
                         break;

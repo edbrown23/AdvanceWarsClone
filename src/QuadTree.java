@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.Random;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Random;
 public class QuadTree {
     public static BufferedImage[] waterSprite = new BufferedImage[3];
     public static BufferedImage grassSprite;
-    public static BufferedImage[] treeSprite = new BufferedImage[3];
+    public static Hashtable<Integer, BufferedImage> treeSpriteTable = new Hashtable<Integer, BufferedImage>();
     public static BufferedImage mountainSprite;
     public static BufferedImage selectedSprite;
     public static QuadTreeNode selectedNode;
@@ -31,15 +32,17 @@ public class QuadTree {
             waterSprite[0] = toCompatibleImage(ImageIO.read(new File("Sprites/waterSprite1.png")));
             waterSprite[1] = toCompatibleImage(ImageIO.read(new File("Sprites/waterSprite2.png")));
             waterSprite[2] = toCompatibleImage(ImageIO.read(new File("Sprites/waterSprite3.png")));
-            
+
             grassSprite = toCompatibleImage(ImageIO.read(new File("Sprites/grassSprite.png")));
-            
-            treeSprite[0] = toCompatibleImage(ImageIO.read(new File("Sprites/treeSprite1.png")));
-            treeSprite[1] = toCompatibleImage(ImageIO.read(new File("Sprites/treeSprite2.png")));
-            treeSprite[2] = toCompatibleImage(ImageIO.read(new File("Sprites/treeSprite3.png")));
-            
+
+            treeSpriteTable.put(20, toCompatibleImage(ImageIO.read(new File("Sprites/treeSprite.png"))));
+            treeSpriteTable.put(40, toCompatibleImage(ImageIO.read(new File("Sprites/treeSprite.png"))));
+            treeSpriteTable.put(80, toCompatibleImage(ImageIO.read(new File("Sprites/treeSprite1.png"))));
+            treeSpriteTable.put(160, toCompatibleImage(ImageIO.read(new File("Sprites/treeSprite2.png"))));
+            treeSpriteTable.put(320, toCompatibleImage(ImageIO.read(new File("Sprites/treeSprite3.png"))));
+
             mountainSprite = toCompatibleImage(ImageIO.read(new File("Sprites/mountainSprite.png")));
-            
+
             BufferedImage temp = SpriteTools.setTransparent(ImageIO.read(new File("Sprites/selectionTool.png")));
             selectedSprite = toCompatibleImage(temp);
         }catch(IOException e){
@@ -134,7 +137,7 @@ public class QuadTree {
                     g2d.drawImage(grassSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
                     break;
                 case Trees:
-                    g2d.drawImage(treeSprite[variableFrameIndex], branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
+                    g2d.drawImage(treeSpriteTable.get(branch.getWidth()), branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
                     break;
                 case Mountains:
                     g2d.drawImage(mountainSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
@@ -193,7 +196,7 @@ public class QuadTree {
             }
         }
     }
-    
+
     public static void changeCell(QuadTreeNode branch, TileTypes newType){
         if(branch.getWidth() == 20 && branch.getHeight() == 20){
             branch.setTile(newType);
@@ -270,7 +273,7 @@ public class QuadTree {
     public static QuadTreeNode getSelectedNode(){
         return selectedNode;
     }
-    
+
     public static void update(double eTime){
         elapsedTime += eTime;
         if(elapsedTime > 20){
