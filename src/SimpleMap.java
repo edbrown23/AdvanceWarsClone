@@ -79,18 +79,18 @@ public class SimpleMap {
     }
 
     public void render(Graphics2D g2d, int topLeftX, int topLeftY){
-        if((mapTreeRoots[0][0].getX() - topLeftX) < (800) && (mapTreeRoots[0][0].getX() + mapTreeRoots[0][0].getWidth() - topLeftX) >= 0){
-            if((mapTreeRoots[0][0].getY() - topLeftY) < (400) && (mapTreeRoots[0][0].getY() + mapTreeRoots[0][0].getHeight() - topLeftY) >= 0){
+        if((mapTreeRoots[0][0].getX() - topLeftX) < (1000) && (mapTreeRoots[0][0].getX() + mapTreeRoots[0][0].getWidth() - topLeftX) >= 0){
+            if((mapTreeRoots[0][0].getY() - topLeftY) < (500) && (mapTreeRoots[0][0].getY() + mapTreeRoots[0][0].getHeight() - topLeftY) >= 0){
                 QuadTree.quadTreeRender(g2d, mapTreeRoots[0][0], topLeftX, topLeftY);
             }
         }
-        if((mapTreeRoots[1][0].getX() - topLeftX) < (800) && (mapTreeRoots[1][0].getX() + mapTreeRoots[1][0].getWidth() - topLeftX) >= 0){
-            if((mapTreeRoots[1][0].getY() - topLeftY) < (400) && (mapTreeRoots[1][0].getY() + mapTreeRoots[1][0].getHeight() - topLeftY) >= 0){
+        if((mapTreeRoots[1][0].getX() - topLeftX) < (1000) && (mapTreeRoots[1][0].getX() + mapTreeRoots[1][0].getWidth() - topLeftX) >= 0){
+            if((mapTreeRoots[1][0].getY() - topLeftY) < (500) && (mapTreeRoots[1][0].getY() + mapTreeRoots[1][0].getHeight() - topLeftY) >= 0){
                 QuadTree.quadTreeRender(g2d, mapTreeRoots[1][0], topLeftX, topLeftY);
             }
         }
-        if((mapTreeRoots[2][0].getX() - topLeftX) < (800) && (mapTreeRoots[2][0].getX() + mapTreeRoots[2][0].getWidth() - topLeftX) >= 0){
-            if((mapTreeRoots[2][0].getY() - topLeftY) < (400) && (mapTreeRoots[2][0].getY() + mapTreeRoots[2][0].getHeight() - topLeftY) >= 0){
+        if((mapTreeRoots[2][0].getX() - topLeftX) < (1000) && (mapTreeRoots[2][0].getX() + mapTreeRoots[2][0].getWidth() - topLeftX) >= 0){
+            if((mapTreeRoots[2][0].getY() - topLeftY) < (500) && (mapTreeRoots[2][0].getY() + mapTreeRoots[2][0].getHeight() - topLeftY) >= 0){
                 QuadTree.quadTreeRender(g2d, mapTreeRoots[2][0], topLeftX, topLeftY);
             }
         }
@@ -109,8 +109,8 @@ public class SimpleMap {
 
     public void renderFog(Graphics2D g2d, int topLeftX, int topLeftY){
         int fogScale = (int)((Math.sin(timeOfDay) + 1) * 100);
-        for(int y = topLeftY; y < (topLeftY + 400); y += 20){
-            for(int x = topLeftX; x < (topLeftX + 800); x += 20){
+        for(int y = topLeftY; y < (topLeftY + 500); y += 20){
+            for(int x = topLeftX; x < (topLeftX + 1000); x += 20){
                 if(fog[Math.round(x / 20.0f)][Math.round(y / 20.0f)]){
                     g2d.setColor(new Color(0, 0, 0, fogScale));
                     g2d.fillRect(x - topLeftX, y - topLeftY, 20, 20);
@@ -127,8 +127,8 @@ public class SimpleMap {
     }
 
     public void calculateFog(int topLeftX, int topLeftY){
-        for(int y = topLeftY; y < (topLeftY + 400); y += 20){
-            for(int x = topLeftX; x < (topLeftX + 800); x += 20){
+        for(int y = topLeftY; y < (topLeftY + 500); y += 20){
+            for(int x = topLeftX; x < (topLeftX + 1000); x += 20){
                 if(!fog[Math.round(x / 20.0f)][Math.round(y / 20.0f)]){
                     fog[Math.round(x / 20.0f)][Math.round(y / 20.0f)] = true;
                 }
@@ -142,7 +142,7 @@ public class SimpleMap {
                     float y = (float)(Math.sin(degree) * dist * 20.0f);
                     int refX = Math.round((currentUnit.getxPosition() + x) / 20);
                     int refY = Math.round((currentUnit.getyPosition() + y) / 20);
-                    if(refX >= 0 && refY >= 0 && refX < 400 && refY < 200){
+                    if(refX >= 0 && refY >= 0 && refX < 768 && refY < 256){
                         TileTypes temp = referenceTiles[refX][refY];
                         if(temp == TileTypes.Mountains || temp == TileTypes.Trees){
                             break;
@@ -190,6 +190,10 @@ public class SimpleMap {
 
     public double getTimeOfDay(){
         return timeOfDay;
+    }
+
+    public void update(double elapsedTime){
+        QuadTree.update(elapsedTime);
     }
 
     public void updateUnitFrames(double elapsedTime){

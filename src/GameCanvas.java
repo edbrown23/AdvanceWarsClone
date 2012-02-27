@@ -11,27 +11,27 @@ import java.util.LinkedList;
  */
 public class GameCanvas extends JPanel {
     private SimpleMap map;
+    private ControlMenu menu;
     private int topLeftX, topLeftY;
     private LinkedList<AStarNode> unitPath;
-    
-    public GameCanvas(String path){
-        this.setSize(400, 200);
-        //map.createMapFromImage(path);
-        topLeftX = 0;
-        topLeftY = 0;
-    }
+    private GameState currentState;
     
     public GameCanvas(int width, int height){
         map = new SimpleMap(width, height);
-        this.setSize(400, 200);
+        this.setSize(500, 250);
         map.createMapFromPerlinNoise(100, 150, 200, 255);
         QuadTree.setupSprites();
         map.getMapTreeRoots();
+        menu = new ControlMenu();
+        this.setLayout(null);
+        this.add(menu);
+        menu.setLocation(0,500);
     }
     
     public void setTopCoords(int topX, int topY){
         topLeftX = topX;
         topLeftY = topY;
+        menu.setTopLeft(topLeftX / 20, topLeftY / 20);
     }
     
     public void setUnitPath(BaseUnit startingUnit, AStarNode goal){
@@ -52,16 +52,16 @@ public class GameCanvas extends JPanel {
     }
     
     @Override
-    public void paint(Graphics g){
+    public void paintComponent(Graphics g){
         Graphics2D g2d = (Graphics2D)g;
 
         map.render(g2d, topLeftX, topLeftY);
         g2d.setColor(Color.black);
-        for(int x = 0; x <= 800; x += 20){
-            g2d.drawLine(x, 0, x, 400);
+        for(int x = 0; x <= 1000; x += 20){
+            g2d.drawLine(x, 0, x, 500);
         }
-        for(int y = 0; y <= 400; y += 20){
-            g2d.drawLine(0, y, 800, y);
+        for(int y = 0; y <= 500; y += 20){
+            g2d.drawLine(0, y, 1000, y);
         }
 
         map.renderSelection(g2d, topLeftX, topLeftY);
@@ -72,10 +72,10 @@ public class GameCanvas extends JPanel {
                 g2d.fillRect((currentPoint.x * 20) + 5 - topLeftX, (currentPoint.y * 20) + 5 - topLeftY, 10, 10);
             }
         }
-        
-        g2d.setColor(Color.white);
-        g2d.fillRect(0, 400, 800, 400);
-        g2d.fillRect(800, 0, 400, 800);
+
+        menu.setSelectedTile(QuadTree.getSelectedNode());
+        // is this evil? I don't know, stack overflow says it is
+        menu.repaint();
     }
     
     public void addUnit(BaseUnit unit){
@@ -100,11 +100,21 @@ public class GameCanvas extends JPanel {
     }
 
     public void setElapsedTime(double elapsedTime){
+        map.update(elapsedTime);
         map.updateUnitFrames(elapsedTime);
         map.setTimeOfDay((map.getTimeOfDay() + elapsedTime / 100) % (2 * Math.PI));
     }
 
     public SimpleMap getMap(){
         return map;
+    }
+
+    public void setCurrentState(GameState currentState) {
+        this.currentState = currentState;
+        menu.setCurrentState(currentState);
+    }
+    
+    public void setSelectedUnit(BaseUnit selectedUnit){
+        menu.setSelectedUnit(selectedUnit);
     }
 }

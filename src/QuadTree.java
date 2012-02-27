@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,22 +13,33 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class QuadTree {
-    private static BufferedImage waterSprite;
-    private static BufferedImage grassSprite;
-    private static BufferedImage treeSprite;
-    private static BufferedImage mountainSprite;
-    private static BufferedImage selectedSprite;
-    private static QuadTreeNode selectedNode;
+    public static BufferedImage[] waterSprite = new BufferedImage[3];
+    public static BufferedImage grassSprite;
+    public static BufferedImage[] treeSprite = new BufferedImage[3];
+    public static BufferedImage mountainSprite;
+    public static BufferedImage selectedSprite;
+    public static QuadTreeNode selectedNode;
+    public static Random rndGen = new Random();
+    public static double elapsedTime = 0.0;
+    public static int variableFrameIndex = 0;
 
     /**
      * The basic sprites are loaded, to save memory. These sprites are used to render the world
      */
     public static void setupSprites(){
         try{
-            waterSprite = toCompatibleImage(ImageIO.read(new File("Sprites/waterSprite.png")));
+            waterSprite[0] = toCompatibleImage(ImageIO.read(new File("Sprites/waterSprite1.png")));
+            waterSprite[1] = toCompatibleImage(ImageIO.read(new File("Sprites/waterSprite2.png")));
+            waterSprite[2] = toCompatibleImage(ImageIO.read(new File("Sprites/waterSprite3.png")));
+            
             grassSprite = toCompatibleImage(ImageIO.read(new File("Sprites/grassSprite.png")));
-            treeSprite = toCompatibleImage(ImageIO.read(new File("Sprites/treeSprite.png")));
+            
+            treeSprite[0] = toCompatibleImage(ImageIO.read(new File("Sprites/treeSprite1.png")));
+            treeSprite[1] = toCompatibleImage(ImageIO.read(new File("Sprites/treeSprite2.png")));
+            treeSprite[2] = toCompatibleImage(ImageIO.read(new File("Sprites/treeSprite3.png")));
+            
             mountainSprite = toCompatibleImage(ImageIO.read(new File("Sprites/mountainSprite.png")));
+            
             BufferedImage temp = SpriteTools.setTransparent(ImageIO.read(new File("Sprites/selectionTool.png")));
             selectedSprite = toCompatibleImage(temp);
         }catch(IOException e){
@@ -41,7 +53,7 @@ public class QuadTree {
      * @param image The input image
      * @return the output image
      */
-    private static BufferedImage toCompatibleImage(BufferedImage image)
+    public static BufferedImage toCompatibleImage(BufferedImage image)
     {
         // obtain the current system graphical settings
         GraphicsConfiguration gfx_config = GraphicsEnvironment.
@@ -116,13 +128,13 @@ public class QuadTree {
         if(!(branch.getTile() == TileTypes.NULL)){
             switch(branch.getTile()){
                 case Water:
-                    g2d.drawImage(waterSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
+                    g2d.drawImage(waterSprite[variableFrameIndex], branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
                     break;
                 case Grass:
                     g2d.drawImage(grassSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
                     break;
                 case Trees:
-                    g2d.drawImage(treeSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
+                    g2d.drawImage(treeSprite[variableFrameIndex], branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
                     break;
                 case Mountains:
                     g2d.drawImage(mountainSprite, branch.getX() - topLeftX, branch.getY() - topLeftY, branch.getWidth(), branch.getHeight(), null);
@@ -132,8 +144,8 @@ public class QuadTree {
             try {
                 QuadTreeNode[] branches = branch.getBranches();
                 for(int i = 0; i < 4; i++){
-                    if((branches[i].getX() - topLeftX) < (800) && (branches[i].getX() + branches[i].getWidth() - topLeftX) >= 0){
-                        if((branches[i].getY() - topLeftY) < (400) && (branches[i].getY() + branches[i].getHeight() - topLeftY) >= 0){
+                    if((branches[i].getX() - topLeftX) < (1000) && (branches[i].getX() + branches[i].getWidth() - topLeftX) >= 0){
+                        if((branches[i].getY() - topLeftY) < (500) && (branches[i].getY() + branches[i].getHeight() - topLeftY) >= 0){
                             quadTreeRender(g2d, branches[i], topLeftX, topLeftY);
                         }
                     }
@@ -257,5 +269,13 @@ public class QuadTree {
 
     public static QuadTreeNode getSelectedNode(){
         return selectedNode;
+    }
+    
+    public static void update(double eTime){
+        elapsedTime += eTime;
+        if(elapsedTime > 20){
+            elapsedTime = 0;
+            variableFrameIndex = rndGen.nextInt(3);
+        }
     }
 }

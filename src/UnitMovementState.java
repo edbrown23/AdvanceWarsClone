@@ -28,7 +28,7 @@ public class UnitMovementState extends GameState {
 
     public void setKeyboardState(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-            if(topLeftX < (width * 20) - 800){
+            if(topLeftX < (width * 20) - 1000){
                 topLeftX += 20;
             }
         }else if(e.getKeyCode() == KeyEvent.VK_LEFT){
@@ -40,7 +40,7 @@ public class UnitMovementState extends GameState {
                 topLeftY -= 20;
             }
         }else if(e.getKeyCode() == KeyEvent.VK_DOWN){
-            if(topLeftY < (height * 20) - 400){
+            if(topLeftY < (height * 20) - 500){
                 topLeftY += 20;
             }
         }else if(e.getKeyCode() == KeyEvent.VK_M){
@@ -61,6 +61,7 @@ public class UnitMovementState extends GameState {
 
     public void render(){
         //System.out.println("Unit State");
+        game.setCurrentState(this);
         game.setTopCoords(topLeftX, topLeftY);
         game.repaint();
     }
@@ -76,7 +77,7 @@ public class UnitMovementState extends GameState {
             for(BaseUnit currentUnit : game.getMap().getUnits()){
                 if(currentUnit.getxPosition() == game.getSelectedNode().getX() && currentUnit.getyPosition() == game.getSelectedNode().getY()){
                     selectedUnit = currentUnit;
-                    System.out.println("You've selected a unit at " + selectedUnit.getxPosition() + " " + selectedUnit.getyPosition());
+                    game.setSelectedUnit(selectedUnit);
                 }else{
                     selectedUnit = null;
                 }

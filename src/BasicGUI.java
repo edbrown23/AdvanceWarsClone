@@ -22,8 +22,7 @@ public class BasicGUI extends JFrame {
         this.setLayout(new BorderLayout());
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(900, 500);
-        this.setVisible(true);
+        this.setSize(1004, 628);
 
         WorldEditState worldEditState = new WorldEditState(-1, 768, 256);
         gameMachine.addState(worldEditState);
@@ -31,14 +30,16 @@ public class BasicGUI extends JFrame {
         gameMachine.addState(unitMovementState);
         gameMachine.rotateState();
         this.add(gameMachine.getCurrentState().getGUIComponent(), BorderLayout.CENTER);
-        this.setSize(901, 501);
+        this.setResizable(false);
+        this.setLocation(150, 150);
+        this.setVisible(true);
 
         MouseHandler mHandler = new MouseHandler();
         gameMachine.getCurrentState().getGUIComponent().addMouseListener(mHandler);
 
         double MAXFPS = 1000000000 / 30.0f; // should stand for 30 frames per second
 
-        double currentTime = 0.0, elapsedTime = 0.0;
+        double currentTime, elapsedTime = 0.0;
 
         while(isRunning){
 
